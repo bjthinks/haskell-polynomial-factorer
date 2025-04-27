@@ -1,6 +1,7 @@
 module Tests where
 
 import Test.HUnit
+import Polynomial
 
 testEqual :: (Eq a, Show a) => String -> a -> a -> Test
 testEqual name x y = TestCase $ assertEqual name x y
