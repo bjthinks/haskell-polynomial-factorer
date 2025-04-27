@@ -35,8 +35,13 @@ showPolynomial = TestList [
     show (Polynomial [(-4,2),(-4,1),(-1,0)]),
   () ~=? ()]
 
+readPolynomial :: Test
+readPolynomial = TestList [
+  "0" ~=? show (read "0" :: Polynomial),
+  () ~=? ()]
+
 polynomialTests :: Test
-polynomialTests = TestList [showPolynomial]
+polynomialTests = TestList [showPolynomial, readPolynomial]
 
 tests :: Test
 tests = TestList [polynomialTests]
