@@ -1,8 +1,9 @@
 module Polynomial where
 
+import Data.List
 import Defs
 
-newtype Polynomial = Polynomial [(Coeff,Exponent)]
+newtype Polynomial = Polynomial [Term]
   deriving Eq
 
 instance Show Polynomial where
@@ -20,3 +21,16 @@ instance Show Polynomial where
     where
       addPlusSign str@('-':_) = str
       addPlusSign str = "+" ++ str
+
+makePolynomial :: [Term] -> Polynomial
+makePolynomial = Polynomial . eliminateZeros . addLikeTerms . sortTerms
+  where
+    eliminateZeros [] = []
+    eliminateZeros ((0,_):ts) = ts
+    eliminateZeros (t:ts) = t : eliminateZeros ts
+    addLikeTerms [] = []
+    addLikeTerms [t] = [t]
+    addLikeTerms (t1@(c1,e1):t2s@((c2,e2):ts))
+      | e1 == e2 = addLikeTerms ((c1+c2,e1):ts)
+      | otherwise = t1 : addLikeTerms t2s
+    sortTerms = reverse . sortOn snd
