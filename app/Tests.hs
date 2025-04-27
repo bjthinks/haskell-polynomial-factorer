@@ -5,7 +5,8 @@ import Polynomial
 
 polynomialTests :: Test
 polynomialTests = TestList [
-  "First test" ~: 1+1 ~=? (2 :: Int)
+  "Show 1" ~: "1" ~=? show (Polynomial [(1,0)]),
+  "Show x" ~: "x" ~=? show (Polynomial [(1,1)])
   ]
 
 tests :: Test
