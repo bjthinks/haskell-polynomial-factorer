@@ -15,3 +15,8 @@ instance Show Polynomial where
       showTerm (c,e) = show c ++ showPower e
       showPower 1 = "x"
       showPower e = "x^" ++ show e
+  show (Polynomial (t:ts)) =
+    show (Polynomial [t]) ++ addPlusSign (show (Polynomial ts))
+    where
+      addPlusSign str@('-':_) = str
+      addPlusSign str = "+" ++ str

@@ -18,7 +18,8 @@ polynomialTests = TestList [
   "Show 3x^2" ~: "3x^2" ~=? show (Polynomial [(3,2)]),
   "Show -x^2" ~: "-x^2" ~=? show (Polynomial [(-1,2)]),
   "Show -5x^2" ~: "-5x^2" ~=? show (Polynomial [(-5,2)]),
-  "Show -53x^27" ~: "-53x^27" ~=? show (Polynomial [(-53,27)])
+  "Show -53x^27" ~: "-53x^27" ~=? show (Polynomial [(-53,27)]),
+  "Show x+1" ~: "x+1" ~=? show (Polynomial [(1,1),(1,0)])
   ]
 
 tests :: Test
