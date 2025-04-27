@@ -8,5 +8,7 @@ newtype Polynomial = Polynomial [(Coeff,Exponent)]
 instance Show Polynomial where
   show (Polynomial []) = "0"
   show (Polynomial [(c,0)]) = show c
+  show (Polynomial [(1,1)]) = "x"
+  show (Polynomial [(-1,1)]) = "-x"
   show (Polynomial [(c,1)]) = show c ++ "x"
   show (Polynomial [(c,e)]) = show c ++ "x^" ++ show e
