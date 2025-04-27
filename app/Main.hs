@@ -1,4 +1,8 @@
 module Main where
 
+import Tests
+
 main :: IO ()
-main = putStrLn "Hello, Haskell!"
+main = do
+  summary <- runTests
+  print summary
