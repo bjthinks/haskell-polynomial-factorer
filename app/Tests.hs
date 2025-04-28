@@ -7,7 +7,7 @@ import ModularPolynomial
 
 printPolynomialTests :: Test
 printPolynomialTests = TestList [
-  "PrettyPrint 0" ~: "0" ~=? printPolynomial (Polynomial [(0,0)]),
+  "PrettyPrint 0" ~: "0" ~=? printPolynomial (Polynomial []),
   "PrettyPrint 1" ~: "1" ~=? printPolynomial (Polynomial [(1,0)]),
   "PrettyPrint 5" ~: "5" ~=? printPolynomial (Polynomial [(5,0)]),
   "PrettyPrint -1" ~: "-1" ~=? printPolynomial (Polynomial [(-1,0)]),
@@ -111,8 +111,26 @@ polynomialTests = TestList
   [printPolynomialTests, makePolynomialTests, parsePolynomialTests,
    polynomialIsNum]
 
+printModularPolynomialTests :: Test
+printModularPolynomialTests = TestList [
+  "0 mod 5" ~=? printModularPolynomial (ModularPolynomial 5 []),
+  "3 mod 5" ~=? printModularPolynomial (ModularPolynomial 5 [(3,0)]),
+  "x^2 mod 5" ~=? printModularPolynomial (ModularPolynomial 5 [(1,2)]),
+  () ~?= ()]
+
+{-
+mp :: ModularPolynomial
+mp = parseModularPolynomial "3x^2+5x-7 mod 5"
+
+mq :: ModularPolynomial
+mq = parseModularPolynomial "-8x+2 mod 5"
+
+mr :: ModularPolynomial
+mr = parseModularPolynomial "-x^3+2x^2+8x+3 mod 5"
+-}
+
 modularPolynomialTests :: Test
-modularPolynomialTests = TestList []
+modularPolynomialTests = TestList [printModularPolynomialTests]
 
 tests :: Test
 tests = TestList [polynomialTests, modularPolynomialTests]
