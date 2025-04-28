@@ -45,7 +45,13 @@ instance Num Polynomial where
         | e1 < e2 = t2 : addTerms allps qs
         | c1+c2 == 0 = addTerms ps qs
         | otherwise = (c1+c2,e1) : addTerms ps qs
-  _ * _ = undefined
+  -- * could be made more efficient
+  Polynomial xs * Polynomial ys = makePolynomial $ multiplyTerms xs ys
+    where
+      multiplyTerms [] _ = []
+      multiplyTerms (p:ps) qs = multiplyTerm p qs ++ multiplyTerms ps qs
+      multiplyTerm _ [] = []
+      multiplyTerm t@(c1,e1) ((c2,e2):ts) = (c1*c2,e1+e2) : multiplyTerm t ts
   negate (Polynomial xs) = Polynomial $ negateTerms xs
     where
       negateTerms [] = []
