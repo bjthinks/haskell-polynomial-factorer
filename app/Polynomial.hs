@@ -1,27 +1,26 @@
 module Polynomial where
 
 import Data.List
-import Text.Read
 import Defs
 
 newtype Polynomial = Polynomial [Term]
-  deriving Eq
+  deriving (Eq, Show, Read)
 
-instance Show Polynomial where
-  show (Polynomial []) = "0"
-  show (Polynomial [t]) = showTerm t
-    where
-      showTerm (c,0) = show c
-      showTerm (1,e) = showPower e
-      showTerm (-1,e) = "-" ++ showPower e
-      showTerm (c,e) = show c ++ showPower e
-      showPower 1 = "x"
-      showPower e = "x^" ++ show e
-  show (Polynomial (t:ts)) =
-    show (Polynomial [t]) ++ addPlusSign (show (Polynomial ts))
-    where
-      addPlusSign str@('-':_) = str
-      addPlusSign str = "+" ++ str
+prettyPrint :: Polynomial -> String
+prettyPrint (Polynomial []) = "0"
+prettyPrint (Polynomial [t]) = prettyPrintTerm t
+  where
+    prettyPrintTerm (c,0) = show c
+    prettyPrintTerm (1,e) = prettyPrintPower e
+    prettyPrintTerm (-1,e) = "-" ++ prettyPrintPower e
+    prettyPrintTerm (c,e) = show c ++ prettyPrintPower e
+    prettyPrintPower 1 = "x"
+    prettyPrintPower e = "x^" ++ show e
+prettyPrint (Polynomial (t:ts)) =
+  prettyPrint (Polynomial [t]) ++ addPlusSign (prettyPrint (Polynomial ts))
+  where
+    addPlusSign str@('-':_) = str
+    addPlusSign str = "+" ++ str
 
 makePolynomial :: [Term] -> Polynomial
 makePolynomial = Polynomial . eliminateZeros . addLikeTerms . sortTerms
@@ -35,7 +34,3 @@ makePolynomial = Polynomial . eliminateZeros . addLikeTerms . sortTerms
       | e1 == e2 = addLikeTerms ((c1+c2,e1):ts)
       | otherwise = t1 : addLikeTerms t2s
     sortTerms = reverse . sortOn snd
-
-instance Read Polynomial where
-  readPrec = undefined
-  readListPrec = readListPrecDefault
