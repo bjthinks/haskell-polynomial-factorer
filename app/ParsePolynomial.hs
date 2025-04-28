@@ -73,7 +73,11 @@ pSignedTerm = do
 pLeadingTerm :: MyParser Term
 pLeadingTerm = pSignedTerm ||| pTerm
 
+pTerms :: MyParser [Term]
+pTerms = many pSignedTerm
+
 pPolynomial :: MyParser Polynomial
 pPolynomial = do
   t <- pLeadingTerm
-  return $ Polynomial [t]
+  ts <- pTerms
+  return $ makePolynomial (t:ts)
