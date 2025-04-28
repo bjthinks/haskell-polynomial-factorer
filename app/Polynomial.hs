@@ -6,9 +6,9 @@ import Defs
 newtype Polynomial = Polynomial [Term]
   deriving (Eq, Show, Read)
 
-prettyPrint :: Polynomial -> String
-prettyPrint (Polynomial []) = "0"
-prettyPrint (Polynomial [t]) = prettyPrintTerm t
+printPolynomial :: Polynomial -> String
+printPolynomial (Polynomial []) = "0"
+printPolynomial (Polynomial [t]) = prettyPrintTerm t
   where
     prettyPrintTerm (c,0) = show c
     prettyPrintTerm (1,e) = prettyPrintPower e
@@ -16,8 +16,9 @@ prettyPrint (Polynomial [t]) = prettyPrintTerm t
     prettyPrintTerm (c,e) = show c ++ prettyPrintPower e
     prettyPrintPower 1 = "x"
     prettyPrintPower e = "x^" ++ show e
-prettyPrint (Polynomial (t:ts)) =
-  prettyPrint (Polynomial [t]) ++ addPlusSign (prettyPrint (Polynomial ts))
+printPolynomial (Polynomial (t:ts)) =
+  printPolynomial (Polynomial [t]) ++
+  addPlusSign (printPolynomial (Polynomial ts))
   where
     addPlusSign str@('-':_) = str
     addPlusSign str = "+" ++ str
