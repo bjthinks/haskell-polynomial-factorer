@@ -75,10 +75,22 @@ parsePolynomialTests = TestList [
   "1" ~=? prettyPrint (parsePolynomial "+1"),
   () ~=? ()]
 
+p :: Polynomial
+p = parsePolynomial "3x^2+5x-7"
+
+q :: Polynomial
+q = parsePolynomial "-8x+2"
+
+r :: Polynomial
+r = parsePolynomial "-x^3+2x^2+8x+3"
+
 polynomialIsNum :: Test
 polynomialIsNum = TestList [
   "57" ~=? prettyPrint (fromInteger 57),
   "2" ~=? prettyPrint (parsePolynomial "1" + parsePolynomial "1"),
+  "3x^2-3x-5" ~=? prettyPrint (p+q),
+  "-x^3+5x^2+13x-4" ~=? prettyPrint (p+r),
+  "-x^3+2x^2+5" ~=? prettyPrint (q+r),
   () ~?= ()]
 
 polynomialTests :: Test

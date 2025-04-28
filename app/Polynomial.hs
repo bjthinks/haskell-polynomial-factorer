@@ -36,7 +36,15 @@ makePolynomial = Polynomial . eliminateZeros . addLikeTerms . sortTerms
     sortTerms = reverse . sortOn snd
 
 instance Num Polynomial where
-  _ + _ = undefined
+  Polynomial xs + Polynomial ys = Polynomial $ addTerms xs ys
+    where
+      addTerms ps [] = ps
+      addTerms [] qs = qs
+      addTerms allps@(t1@(c1,e1):ps) allqs@(t2@(c2,e2):qs)
+        | e1 > e2 = t1 : addTerms ps allqs
+        | e1 < e2 = t2 : addTerms allps qs
+        | c1+c2 == 0 = addTerms ps qs
+        | otherwise = (c1+c2,e1) : addTerms ps qs
   _ * _ = undefined
   negate _ = undefined
   abs _ = error "No abs for Polynomial"
