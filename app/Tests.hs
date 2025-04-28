@@ -75,9 +75,16 @@ parsePolynomialTests = TestList [
   "1" ~=? prettyPrint (parsePolynomial "+1"),
   () ~=? ()]
 
+polynomialIsNum :: Test
+polynomialIsNum = TestList [
+  "57" ~=? prettyPrint (fromInteger 57),
+  "2" ~=? prettyPrint (parsePolynomial "1" + parsePolynomial "1"),
+  () ~?= ()]
+
 polynomialTests :: Test
 polynomialTests = TestList
-  [prettyPrintPolynomial, makePolynomialTests, parsePolynomialTests]
+  [prettyPrintPolynomial, makePolynomialTests, parsePolynomialTests,
+   polynomialIsNum]
 
 tests :: Test
 tests = TestList [polynomialTests]

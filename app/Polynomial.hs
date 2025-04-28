@@ -34,3 +34,11 @@ makePolynomial = Polynomial . eliminateZeros . addLikeTerms . sortTerms
       | e1 == e2 = addLikeTerms ((c1+c2,e1):ts)
       | otherwise = t1 : addLikeTerms t2s
     sortTerms = reverse . sortOn snd
+
+instance Num Polynomial where
+  _ + _ = undefined
+  _ * _ = undefined
+  negate _ = undefined
+  abs _ = error "No abs for Polynomial"
+  signum _ = error "No signum for Polynomial"
+  fromInteger c = makePolynomial [(fromInteger c,0)]
