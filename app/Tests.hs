@@ -49,15 +49,13 @@ makePolynomialTests = TestList [
   "-x-1" ~=? show (makePolynomial [(-2,1),(1,0),(2,1),(-1,1),(-2,0)]),
   () ~=? ()]
 
-{-
 readPolynomial :: Test
 readPolynomial = TestList [
-  "0" ~=? show (read "0" :: Polynomial),
+  "Read 0" ~=? show (read "0" :: Polynomial),
   () ~=? ()]
--}
 
 polynomialTests :: Test
-polynomialTests = TestList [showPolynomial, makePolynomialTests]
+polynomialTests = TestList [showPolynomial, makePolynomialTests, readPolynomial]
 
 tests :: Test
 tests = TestList [polynomialTests]

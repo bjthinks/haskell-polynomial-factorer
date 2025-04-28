@@ -1,6 +1,7 @@
 module Polynomial where
 
 import Data.List
+import Text.Read
 import Defs
 
 newtype Polynomial = Polynomial [Term]
@@ -34,3 +35,7 @@ makePolynomial = Polynomial . eliminateZeros . addLikeTerms . sortTerms
       | e1 == e2 = addLikeTerms ((c1+c2,e1):ts)
       | otherwise = t1 : addLikeTerms t2s
     sortTerms = reverse . sortOn snd
+
+instance Read Polynomial where
+  readPrec = undefined
+  readListPrec = readListPrecDefault
