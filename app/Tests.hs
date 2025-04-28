@@ -2,6 +2,7 @@ module Tests where
 
 import Test.HUnit
 import Polynomial
+import ParsePolynomial
 
 prettyPrintPolynomial :: Test
 prettyPrintPolynomial = TestList [
@@ -53,9 +54,14 @@ makePolynomialTests = TestList [
   "-x-1" ~=? prettyPrint (makePolynomial [(-2,1),(1,0),(2,1),(-1,1),(-2,0)]),
   () ~=? ()]
 
+parsePolynomialTests :: Test
+parsePolynomialTests = TestList [
+  "0" ~=? prettyPrint (parsePolynomial "0"),
+  () ~=? ()]
+
 polynomialTests :: Test
 polynomialTests = TestList
-  [prettyPrintPolynomial, makePolynomialTests]
+  [prettyPrintPolynomial, makePolynomialTests, parsePolynomialTests]
 
 tests :: Test
 tests = TestList [polynomialTests]
