@@ -98,6 +98,7 @@ polynomialIsNum = TestList [
   "-3x^5+x^4+41x^3+35x^2-41x-21" ~=? prettyPrint (p*r),
   "8x^4-18x^3-60x^2-8x+6" ~=? prettyPrint (q*r),
   "x^2-1" ~=? prettyPrint (parsePolynomial "x+1" * parsePolynomial "x-1"),
+  "x^4-4x^3+6x^2-4x+1" ~=? prettyPrint (parsePolynomial "x-1" ^ (4 :: Int)),
   () ~?= ()]
 
 polynomialTests :: Test
