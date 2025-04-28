@@ -38,13 +38,22 @@ pExponent = do
   number <- some digit
   return (read number :: Exponent)
 
-pTerm :: MyParser Term
-pTerm = do
+pGeneralTerm :: MyParser Term
+pGeneralTerm = do
   c <- pCoeff
   pX
   pCarat
   e <- pExponent
   return (c,e)
+
+pLinearTerm :: MyParser Term
+pLinearTerm = do
+  c <- pCoeff
+  pX
+  return (c,1)
+
+pTerm :: MyParser Term
+pTerm = pGeneralTerm ||| pLinearTerm
 
 pSignedTerm :: MyParser Term
 pSignedTerm = do
