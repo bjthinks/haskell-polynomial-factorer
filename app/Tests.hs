@@ -72,6 +72,7 @@ parsePolynomialTests = TestList [
   "x^2" ~=? prettyPrint (parsePolynomial "1x^2"),
   "-x^5" ~=? prettyPrint (parsePolynomial "-1x^5"),
   "-x^2+4x-4" ~=? prettyPrint (parsePolynomial "3x-2-x^2-2+x"),
+  "1" ~=? prettyPrint (parsePolynomial "+1"),
   () ~=? ()]
 
 polynomialTests :: Test
