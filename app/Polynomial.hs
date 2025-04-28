@@ -46,7 +46,10 @@ instance Num Polynomial where
         | c1+c2 == 0 = addTerms ps qs
         | otherwise = (c1+c2,e1) : addTerms ps qs
   _ * _ = undefined
-  negate _ = undefined
+  negate (Polynomial xs) = Polynomial $ negateTerms xs
+    where
+      negateTerms [] = []
+      negateTerms ((c,e):ts) = (-c,e) : negateTerms ts
   abs _ = error "No abs for Polynomial"
   signum _ = error "No signum for Polynomial"
   fromInteger c = makePolynomial [(fromInteger c,0)]
