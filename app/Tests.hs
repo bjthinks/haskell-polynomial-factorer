@@ -57,6 +57,21 @@ makePolynomialTests = TestList [
 parsePolynomialTests :: Test
 parsePolynomialTests = TestList [
   "0" ~=? prettyPrint (parsePolynomial "0"),
+  "1" ~=? prettyPrint (parsePolynomial "1"),
+  "-1" ~=? prettyPrint (parsePolynomial "-1"),
+  "5" ~=? prettyPrint (parsePolynomial "5"),
+  "x" ~=? prettyPrint (parsePolynomial "x"),
+  "-x" ~=? prettyPrint (parsePolynomial "-x"),
+  "3x" ~=? prettyPrint (parsePolynomial "3x"),
+  "-7x" ~=? prettyPrint (parsePolynomial "-7x"),
+  "x+1" ~=? prettyPrint (parsePolynomial "1+x"),
+  "x-1" ~=? prettyPrint (parsePolynomial "-1+x"),
+  "-x+1" ~=? prettyPrint (parsePolynomial "1-x"),
+  "-x-1" ~=? prettyPrint (parsePolynomial "-1-x"),
+  "x^2" ~=? prettyPrint (parsePolynomial "x^2"),
+  "x^2" ~=? prettyPrint (parsePolynomial "1x^2"),
+  "-x^5" ~=? prettyPrint (parsePolynomial "-1x^5"),
+  "-x^2+4x-4" ~=? prettyPrint (parsePolynomial "3x-2-x^2-2+x"),
   () ~=? ()]
 
 polynomialTests :: Test
