@@ -11,7 +11,7 @@ infixl 3 |||
 
 parsePolynomial :: String -> Polynomial
 parsePolynomial str =
-  let result = runParser pPolynomial () "" str
+  let result = parse pPolynomial "" str
   in case result of
     Left err -> error $ show err
     Right poly -> poly
