@@ -3,6 +3,7 @@ module Tests where
 import Test.HUnit
 import Polynomial
 import ParsePolynomial
+import ModularPolynomial
 
 printPolynomialTests :: Test
 printPolynomialTests = TestList [
@@ -110,8 +111,11 @@ polynomialTests = TestList
   [printPolynomialTests, makePolynomialTests, parsePolynomialTests,
    polynomialIsNum]
 
+modularPolynomialTests :: Test
+modularPolynomialTests = TestList []
+
 tests :: Test
-tests = TestList [polynomialTests]
+tests = TestList [polynomialTests, modularPolynomialTests]
 
 runTests :: IO Counts
 runTests = runTestTT tests
