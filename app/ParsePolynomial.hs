@@ -27,6 +27,9 @@ pCoeff = do
   number <- some digit
   return (read number :: Coeff)
 
+pMaybeCoeff :: MyParser Coeff
+pMaybeCoeff = pCoeff ||| return 1
+
 pX :: MyParser ()
 pX = char 'x' >> return ()
 
@@ -40,7 +43,7 @@ pExponent = do
 
 pGeneralTerm :: MyParser Term
 pGeneralTerm = do
-  c <- pCoeff
+  c <- pMaybeCoeff
   pX
   pCarat
   e <- pExponent
@@ -48,7 +51,7 @@ pGeneralTerm = do
 
 pLinearTerm :: MyParser Term
 pLinearTerm = do
-  c <- pCoeff
+  c <- pMaybeCoeff
   pX
   return (c,1)
 
