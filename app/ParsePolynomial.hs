@@ -80,4 +80,5 @@ pPolynomial :: MyParser Polynomial
 pPolynomial = do
   t <- pLeadingTerm
   ts <- pTerms
+  eof
   return $ makePolynomial (t:ts)
