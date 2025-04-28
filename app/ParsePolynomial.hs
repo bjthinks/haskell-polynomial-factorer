@@ -52,8 +52,13 @@ pLinearTerm = do
   pX
   return (c,1)
 
+pConstantTerm :: MyParser Term
+pConstantTerm = do
+  c <- pCoeff
+  return (c,0)
+
 pTerm :: MyParser Term
-pTerm = pGeneralTerm ||| pLinearTerm
+pTerm = pGeneralTerm ||| pLinearTerm ||| pConstantTerm
 
 pSignedTerm :: MyParser Term
 pSignedTerm = do
