@@ -1,10 +1,11 @@
-module ParsePolynomial(parsePolynomial) where
+module ParsePolynomial(parsePolynomial, parseModularPolynomial) where
 
 import Text.Parsec
 --import Text.Parsec.Char
 import Control.Applicative (some)
 import Defs
 import Polynomial
+import ModularPolynomial
 
 type MyParser = Parsec String ()
 
@@ -18,6 +19,13 @@ parsePolynomial str =
   in case result of
     Left err -> error $ show err
     Right poly -> poly
+
+parseModularPolynomial :: String -> ModularPolynomial
+parseModularPolynomial str =
+  let result = parse pModularPolynomial "" str
+  in case result of
+    Left err -> error $ show err
+    Right mpoly -> mpoly
 
 pSign :: MyParser Char
 pSign = oneOf "+-"
@@ -82,3 +90,6 @@ pPolynomial = do
   ts <- pTerms
   eof
   return $ makePolynomial (t:ts)
+
+pModularPolynomial :: MyParser ModularPolynomial
+pModularPolynomial = undefined
