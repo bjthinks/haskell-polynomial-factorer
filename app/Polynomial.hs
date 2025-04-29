@@ -70,11 +70,25 @@ derivative (Polynomial ts) = Polynomial (applyDiff ts)
     applyDiff [(_,0)] = []
     applyDiff ((c,e):us) = (c*e,e-1) : applyDiff us
 
-leadingTerm :: Polynomial -> Polynomial
-leadingTerm p@(Polynomial []) = p
-leadingTerm (Polynomial ts) = Polynomial [head ts]
+leadingTerm :: Polynomial -> Term
+leadingTerm (Polynomial []) = (0,0)
+leadingTerm (Polynomial ts) = head ts
+
+-- divisionStep D d = (c, qTerm, rema)
+-- so that c * D = d * (c * qTerm) + rema
+divisionStep :: Polynomial -> Polynomial -> (Coeff, Polynomial, Polynomial)
+divisionStep _ (Polynomial []) = error "attempt to divide a polynomial by 0"
+divisionStep (Polynomial []) _ = (1, Polynomial [], Polynomial [])
+divisionStep dividend@(Polynomial ((cltD,eltD):_))
+  divisor@(Polynomial ((cltd,eltd):_)) =
+  let qTerm = Polynomial [(cltD `div` g, eltD - eltd)]
+      c = cltd `div` g
+      g = gcd cltD cltd
+      rema = cpoly * dividend - divisor * qTerm
+      cpoly = Polynomial [(c,0)]
+  in (c, qTerm, rema)
 
 -- divide dividend divisor = (quotient, remainder)
 divide :: Polynomial -> Polynomial -> (Polynomial, Polynomial)
-divide dividend divisor =
+divide _ _ {-dividend divisor-} =
   undefined
