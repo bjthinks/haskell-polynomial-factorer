@@ -74,6 +74,12 @@ leadingTerm :: Polynomial -> Term
 leadingTerm (Polynomial []) = (0,0)
 leadingTerm (Polynomial ts) = head ts
 
+leadingCoeff :: Polynomial -> Coeff
+leadingCoeff = fst . leadingTerm
+
+degree :: Polynomial -> Exponent
+degree = snd . leadingTerm
+
 constantPolynomial :: Coeff -> Polynomial
 constantPolynomial 0 = Polynomial []
 constantPolynomial c = Polynomial [(c,0)]
