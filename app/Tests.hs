@@ -136,7 +136,8 @@ mr = parseModularPolynomial "-x^3+2x^2+8x+3 mod 5"
 -}
 
 modularPolynomialTests :: Test
-modularPolynomialTests = TestList [printModularPolynomialTests]
+modularPolynomialTests = TestList
+  [printModularPolynomialTests, makeModularPolynomialTests]
 
 tests :: Test
 tests = TestList [polynomialTests, modularPolynomialTests]

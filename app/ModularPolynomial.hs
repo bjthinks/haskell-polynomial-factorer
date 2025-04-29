@@ -19,8 +19,9 @@ makeModularPolynomial m =
     eliminateZeros ((0,_):ts) = ts
     eliminateZeros (t:ts) = t : eliminateZeros ts
     addLikeTerms [] = []
-    addLikeTerms [t] = [t]
+    addLikeTerms [t] = [canonical t]
     addLikeTerms (t1@(c1,e1):t2s@((c2,e2):ts))
-      | e1 == e2 = addLikeTerms ((c1+c2 `mod` m,e1):ts)
-      | otherwise = t1 : addLikeTerms t2s
+      | e1 == e2 = addLikeTerms (((c1+c2),e1):ts)
+      | otherwise = canonical t1 : addLikeTerms t2s
+    canonical (c,e) = (c `mod` m,e)
     sortTerms = reverse . sortOn snd
