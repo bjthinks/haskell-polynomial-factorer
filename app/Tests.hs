@@ -183,6 +183,9 @@ p4 = parsePolynomial "x^3+3"
 p5 :: Polynomial
 p5 = parsePolynomial "x+5"
 
+p6 :: Polynomial
+p6 = parsePolynomial "10x^3"
+
 polynomialOpTests :: Test
 polynomialOpTests = TestList [
   "6x + 5" ~=? printPolynomial (derivative p),
@@ -202,7 +205,14 @@ polynomialOpTests = TestList [
   (1,2) ~=? leadingTerm p3,
   (1,3) ~=? leadingTerm p4,
   (1,1) ~=? leadingTerm p5,
+  (-8,"3x","-46x + 56") ~=? showStep (divisionStep p q),
+  (3,"-x","11x^2 + 17x + 9") ~=? showStep (divisionStep r p),
+  (-8,"-x^2","-14x^2 - 64x - 24") ~=? showStep (divisionStep r q),
+  (-4,"5x^2","-10x^2") ~=? showStep (divisionStep p6 q),
   () ~=? ()]
+  where
+    showStep (constant, quotient, remainder)
+      = (constant, printPolynomial quotient, printPolynomial remainder)
 
 squareFreeTests :: Test
 squareFreeTests = TestList [
