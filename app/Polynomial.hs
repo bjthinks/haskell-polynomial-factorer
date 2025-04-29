@@ -47,6 +47,8 @@ instance Num Polynomial where
         | c1+c2 == 0 = addTerms ps qs
         | otherwise = (c1+c2,e1) : addTerms ps qs
   -- * could be made more efficient
+  -- for instance, join together like terms before collecting all possible
+  -- cross terms into one giant list...
   Polynomial xs * Polynomial ys = makePolynomial $ multiplyTerms xs ys
     where
       multiplyTerms [] _ = []

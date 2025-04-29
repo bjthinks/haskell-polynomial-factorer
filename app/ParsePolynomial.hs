@@ -28,25 +28,36 @@ parseModularPolynomial str =
     Right mpoly -> mpoly
 
 pSign :: MyParser Char
-pSign = oneOf "+-"
+pSign = do
+  s <- oneOf "+-"
+  spaces
+  return s
 
 pCoeff :: MyParser Coeff
 pCoeff = do
   number <- some digit
+  spaces
   return (read number :: Coeff)
 
 pMaybeCoeff :: MyParser Coeff
 pMaybeCoeff = pCoeff ||| return 1
 
 pX :: MyParser ()
-pX = char 'x' >> return ()
+pX = do
+  _ <- char 'x'
+  spaces
+  return ()
 
 pCarat :: MyParser ()
-pCarat = char '^' >> return ()
+pCarat = do
+  _ <- char '^'
+  spaces
+  return ()
 
 pExponent :: MyParser Exponent
 pExponent = do
   number <- some digit
+  spaces
   return (read number :: Exponent)
 
 pGeneralTerm :: MyParser Term
@@ -86,10 +97,24 @@ pTerms = many pSignedTerm
 
 pPolynomial :: MyParser Polynomial
 pPolynomial = do
+  spaces
   t <- pLeadingTerm
   ts <- pTerms
   eof
   return $ makePolynomial (t:ts)
 
+pMod :: MyParser ()
+pMod = do
+  _ <- string "mod"
+  spaces
+  return ()
+
 pModularPolynomial :: MyParser ModularPolynomial
-pModularPolynomial = undefined
+pModularPolynomial = do
+  spaces
+  t <- pLeadingTerm
+  ts <- pTerms
+  pMod
+  m <- pCoeff
+  eof
+  return $ makeModularPolynomial m (t:ts)

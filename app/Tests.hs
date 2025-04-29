@@ -125,7 +125,7 @@ makeModularPolynomialTests = TestList [
   () ~?= ()]
 
 mp :: ModularPolynomial
-mp = parseModularPolynomial "3x^2+5x-7 mod 5"
+mp = parseModularPolynomial " 3 x ^ 2 + 5 x - 7 mod 5 "
 
 mq :: ModularPolynomial
 mq = parseModularPolynomial "-8x+2 mod 5"
