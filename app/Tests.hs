@@ -149,6 +149,9 @@ modularPolynomialIsNum = TestList [
   "3x^2 + 2x mod 5" ~=? printModularPolynomial (mp + mq),
   "4x^3 + 3x + 1 mod 5" ~=? printModularPolynomial (mp + mr),
   "4x^3 + 2x^2 mod 5" ~=? printModularPolynomial (mq + mr),
+  "x^3 + x^2 + x + 1 mod 5" ~=? printModularPolynomial (mp * mq),
+  "2x^5 + x^4 + x^3 + 4x + 4 mod 5" ~=? printModularPolynomial (mp * mr),
+  "3x^4 + 2x^3 + 2x + 1 mod 5" ~=? printModularPolynomial (mq * mr),
   () ~=? ()]
 
 modularPolynomialTests :: Test
