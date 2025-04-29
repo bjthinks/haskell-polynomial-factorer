@@ -81,7 +81,7 @@ parsePolynomialTests = TestList [
   () ~=? ()]
 
 p :: Polynomial
-p = parsePolynomial "3x^2+5x-7"
+p = parsePolynomial "  3   x ^  2 + 5 x   - 7  "
 
 q :: Polynomial
 q = parsePolynomial "-8x+2"
