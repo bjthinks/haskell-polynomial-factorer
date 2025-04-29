@@ -18,10 +18,10 @@ printPolynomial (Polynomial [t]) = prettyPrintTerm t
     prettyPrintPower e = "x^" ++ show e
 printPolynomial (Polynomial (t:ts)) =
   printPolynomial (Polynomial [t]) ++
-  addPlusSign (printPolynomial (Polynomial ts))
+  addSignAndSpaces (printPolynomial (Polynomial ts))
   where
-    addPlusSign str@('-':_) = str
-    addPlusSign str = "+" ++ str
+    addSignAndSpaces ('-':str) = " - " ++ str
+    addSignAndSpaces str = " + " ++ str
 
 makePolynomial :: [Term] -> Polynomial
 makePolynomial = Polynomial . eliminateZeros . addLikeTerms . sortTerms
