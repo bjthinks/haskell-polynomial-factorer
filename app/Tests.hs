@@ -108,7 +108,7 @@ polynomialIsNum = TestList [
   "x^2 - 1" ~=? printPolynomial (parsePolynomial "x+1" * parsePolynomial "x-1"),
   "x^4 - 4x^3 + 6x^2 - 4x + 1" ~=?
     printPolynomial (parsePolynomial "x-1" ^ (4 :: Int)),
-  () ~?= ()]
+  () ~=? ()]
 
 polynomialTests :: Test
 polynomialTests = TestList
@@ -120,13 +120,13 @@ printModularPolynomialTests = TestList [
   "0 mod 5" ~=? printModularPolynomial (ModularPolynomial 5 []),
   "3 mod 5" ~=? printModularPolynomial (ModularPolynomial 5 [(3,0)]),
   "x^2 mod 5" ~=? printModularPolynomial (ModularPolynomial 5 [(1,2)]),
-  () ~?= ()]
+  () ~=? ()]
 
 makeModularPolynomialTests :: Test
 makeModularPolynomialTests = TestList [
   "4x^2 + 3 mod 5" ~=? printModularPolynomial
     (makeModularPolynomial 5 [(-2,0),(3,1),(7,1),(-1,2)]),
-  () ~?= ()]
+  () ~=? ()]
 
 mp :: ModularPolynomial
 mp = parseModularPolynomial " 3 x ^ 2 + 5 x - 7 mod 5 "
@@ -139,10 +139,10 @@ mr = parseModularPolynomial "-x^3+2x^2+8x+3 mod 5"
 
 parseModularPolynomialTests :: Test
 parseModularPolynomialTests = TestList [
-  "3x^2 + 3 mod 5" ~?= printModularPolynomial mp,
-  "2x + 2 mod 5" ~?= printModularPolynomial mq,
-  "4x^3 + 2x^2 + 3x + 3 mod 5" ~?= printModularPolynomial mr,
-  () ~?= ()]
+  "3x^2 + 3 mod 5" ~=? printModularPolynomial mp,
+  "2x + 2 mod 5" ~=? printModularPolynomial mq,
+  "4x^3 + 2x^2 + 3x + 3 mod 5" ~=? printModularPolynomial mr,
+  () ~=? ()]
 
 modularPolynomialTests :: Test
 modularPolynomialTests = TestList
