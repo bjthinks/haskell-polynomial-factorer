@@ -64,4 +64,8 @@ instance Num Polynomial where
   fromInteger c = makePolynomial [(fromInteger c,0)]
 
 derivative :: Polynomial -> Polynomial
-derivative p@(Polynomial []) = p
+derivative (Polynomial ts) = Polynomial (applyDiff ts)
+  where
+    applyDiff [] = []
+    applyDiff [(_,0)] = []
+    applyDiff ((c,e):us) = (c*e,e-1) : applyDiff us
