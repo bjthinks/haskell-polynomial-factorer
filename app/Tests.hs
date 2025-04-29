@@ -193,6 +193,15 @@ polynomialOpTests = TestList [
   "2x" ~=? printPolynomial (derivative p3),
   "3x^2" ~=? printPolynomial (derivative p4),
   "1" ~=? printPolynomial (derivative p5),
+  "0" ~=? printPolynomial (leadingTerm $ Polynomial []),
+  "3x^2" ~=? printPolynomial (leadingTerm p),
+  "-8x" ~=? printPolynomial (leadingTerm q),
+  "-x^3" ~=? printPolynomial (leadingTerm r),
+  "x" ~=? printPolynomial (leadingTerm p1),
+  "x" ~=? printPolynomial (leadingTerm p2),
+  "x^2" ~=? printPolynomial (leadingTerm p3),
+  "x^3" ~=? printPolynomial (leadingTerm p4),
+  "x" ~=? printPolynomial (leadingTerm p5),
   () ~=? ()]
 
 squareFreeTests :: Test

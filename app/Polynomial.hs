@@ -69,3 +69,12 @@ derivative (Polynomial ts) = Polynomial (applyDiff ts)
     applyDiff [] = []
     applyDiff [(_,0)] = []
     applyDiff ((c,e):us) = (c*e,e-1) : applyDiff us
+
+leadingTerm :: Polynomial -> Polynomial
+leadingTerm p@(Polynomial []) = p
+leadingTerm (Polynomial ts) = Polynomial [head ts]
+
+-- divide dividend divisor = (quotient, remainder)
+divide :: Polynomial -> Polynomial -> (Polynomial, Polynomial)
+divide dividend divisor =
+  undefined
