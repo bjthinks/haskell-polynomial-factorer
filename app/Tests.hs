@@ -183,6 +183,18 @@ p4 = parsePolynomial "x^3+3"
 p5 :: Polynomial
 p5 = parsePolynomial "x+5"
 
+polynomialOpTests :: Test
+polynomialOpTests = TestList [
+  "6x + 5" ~=? printPolynomial (derivative p),
+  "-8" ~=? printPolynomial (derivative q),
+  "-3x^2 + 4x + 8" ~=? printPolynomial (derivative r),
+  "1" ~=? printPolynomial (derivative p1),
+  "1" ~=? printPolynomial (derivative p2),
+  "2x" ~=? printPolynomial (derivative p3),
+  "3x^2" ~=? printPolynomial (derivative p4),
+  "1" ~=? printPolynomial (derivative p5),
+  () ~=? ()]
+
 squareFreeTests :: Test
 squareFreeTests = TestList [
   [("x + 1)",1)] ~=? printResults (squareFree $ p1),
@@ -192,7 +204,8 @@ squareFreeTests = TestList [
   () ~=? ()]
 
 tests :: Test
-tests = TestList [polynomialTests, modularPolynomialTests, squareFreeTests]
+tests = TestList [polynomialTests, modularPolynomialTests, polynomialOpTests{-,
+                  squareFreeTests-}]
 
 runTests :: IO Counts
 runTests = runTestTT tests

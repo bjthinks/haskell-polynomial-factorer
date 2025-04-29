@@ -62,3 +62,6 @@ instance Num Polynomial where
   abs _ = error "No abs for Polynomial"
   signum _ = error "No signum for Polynomial"
   fromInteger c = makePolynomial [(fromInteger c,0)]
+
+derivative :: Polynomial -> Polynomial
+derivative p@(Polynomial []) = p
