@@ -154,7 +154,7 @@ modularPolynomialIsNum = TestList [
 modularPolynomialTests :: Test
 modularPolynomialTests = TestList
   [printModularPolynomialTests, makeModularPolynomialTests,
-    parseModularPolynomialTests]
+    parseModularPolynomialTests, modularPolynomialIsNum]
 
 tests :: Test
 tests = TestList [polynomialTests, modularPolynomialTests]
