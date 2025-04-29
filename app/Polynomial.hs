@@ -83,14 +83,15 @@ constantPolynomial c = Polynomial [(c,0)]
 divisionStep :: Polynomial -> Polynomial -> (Coeff, Polynomial, Polynomial)
 divisionStep _ (Polynomial []) = error "attempt to divide a polynomial by 0"
 divisionStep (Polynomial []) _ = (1, Polynomial [], Polynomial [])
-divisionStep dividend@(Polynomial ((dividendLeadingCoeff,dividendDegree):_))
-  divisor@(Polynomial ((divisorLeadingCoeff,divisorDegree):_)) =
-  let qTerm = Polynomial [(dividendLeadingCoeff `div` g,
-                           dividendDegree - divisorDegree)]
-      c = divisorLeadingCoeff `div` g
+divisionStep dividend divisor =
+  let (dividendLeadingCoeff, dividendDegree) = leadingTerm dividend
+      (divisorLeadingCoeff, divisorDegree) = leadingTerm divisor
+      quotient = Polynomial [(dividendLeadingCoeff `div` g,
+                              dividendDegree - divisorDegree)]
+      constant = divisorLeadingCoeff `div` g
       g = gcd dividendLeadingCoeff divisorLeadingCoeff
-      rema = constantPolynomial c * dividend - divisor * qTerm
-  in (c, qTerm, rema)
+      remainder = constantPolynomial constant * dividend - divisor * quotient
+  in (constant, quotient, remainder)
 
 -- divide dividend divisor = (quotient, remainder)
 divide :: Polynomial -> Polynomial -> (Polynomial, Polynomial)
