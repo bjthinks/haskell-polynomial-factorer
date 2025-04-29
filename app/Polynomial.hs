@@ -74,18 +74,22 @@ leadingTerm :: Polynomial -> Term
 leadingTerm (Polynomial []) = (0,0)
 leadingTerm (Polynomial ts) = head ts
 
--- divisionStep D d = (c, qTerm, rema)
--- so that c * D = d * (c * qTerm) + rema
+constantPolynomial :: Coeff -> Polynomial
+constantPolynomial 0 = Polynomial []
+constantPolynomial c = Polynomial [(c,0)]
+
+-- divisionStep dividend divisor = (c, qTerm, rema)
+-- so that c * dividend = divisor * (c * qTerm) + rema
 divisionStep :: Polynomial -> Polynomial -> (Coeff, Polynomial, Polynomial)
 divisionStep _ (Polynomial []) = error "attempt to divide a polynomial by 0"
 divisionStep (Polynomial []) _ = (1, Polynomial [], Polynomial [])
-divisionStep dividend@(Polynomial ((cltD,eltD):_))
-  divisor@(Polynomial ((cltd,eltd):_)) =
-  let qTerm = Polynomial [(cltD `div` g, eltD - eltd)]
-      c = cltd `div` g
-      g = gcd cltD cltd
-      rema = cpoly * dividend - divisor * qTerm
-      cpoly = Polynomial [(c,0)]
+divisionStep dividend@(Polynomial ((dividendLeadingCoeff,dividendDegree):_))
+  divisor@(Polynomial ((divisorLeadingCoeff,divisorDegree):_)) =
+  let qTerm = Polynomial [(dividendLeadingCoeff `div` g,
+                           dividendDegree - divisorDegree)]
+      c = divisorLeadingCoeff `div` g
+      g = gcd dividendLeadingCoeff divisorLeadingCoeff
+      rema = constantPolynomial c * dividend - divisor * qTerm
   in (c, qTerm, rema)
 
 -- divide dividend divisor = (quotient, remainder)

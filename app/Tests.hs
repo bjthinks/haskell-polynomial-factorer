@@ -186,6 +186,9 @@ p5 = parsePolynomial "x+5"
 p6 :: Polynomial
 p6 = parsePolynomial "10x^3"
 
+p7 :: Polynomial
+p7 = parsePolynomial "16"
+
 polynomialOpTests :: Test
 polynomialOpTests = TestList [
   "6x + 5" ~=? printPolynomial (derivative p),
@@ -209,6 +212,8 @@ polynomialOpTests = TestList [
   (3,"-x","11x^2 + 17x + 9") ~=? showStep (divisionStep r p),
   (-8,"-x^2","-14x^2 - 64x - 24") ~=? showStep (divisionStep r q),
   (-4,"5x^2","-10x^2") ~=? showStep (divisionStep p6 q),
+  (10,"-1","20x^2 + 80x + 30") ~=? showStep (divisionStep r p6),
+  (8,"5x^3","0") ~=? showStep (divisionStep p6 p7),
   () ~=? ()]
   where
     showStep (constant, quotient, remainder)
