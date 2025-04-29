@@ -144,6 +144,13 @@ parseModularPolynomialTests = TestList [
   "4x^3 + 2x^2 + 3x + 3 mod 5" ~=? printModularPolynomial mr,
   () ~=? ()]
 
+modularPolynomialIsNum :: Test
+modularPolynomialIsNum = TestList [
+  "3x^2 + 2x mod 5" ~=? printModularPolynomial (mp + mq),
+  "4x^3 + 3x + 1 mod 5" ~=? printModularPolynomial (mp + mr),
+  "4x^3 + 2x^2 mod 5" ~=? printModularPolynomial (mq + mr),
+  () ~=? ()]
+
 modularPolynomialTests :: Test
 modularPolynomialTests = TestList
   [printModularPolynomialTests, makeModularPolynomialTests,
