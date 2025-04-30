@@ -28,7 +28,7 @@ makePolynomial = Polynomial . eliminateZeros . addLikeTerms . sortTerms
   where
     eliminateZeros :: [Term] -> [Term]
     eliminateZeros [] = []
-    eliminateZeros ((Term 0 _):ts) = ts
+    eliminateZeros (Term 0 _ : ts) = ts
     eliminateZeros (t:ts) = t : eliminateZeros ts
     addLikeTerms :: [Term] -> [Term]
     addLikeTerms [] = []
@@ -143,7 +143,7 @@ divideByConstant :: Coeff -> Polynomial -> Polynomial
 divideByConstant c (Polynomial ts) = Polynomial $ dbc ts
   where
     dbc [] = []
-    dbc ((Term coeff exponent):rest) = Term (coeff `div` c) exponent : dbc rest
+    dbc ((Term coeff expo):rest) = Term (coeff `div` c) expo : dbc rest
 
 polynomialGcd :: Polynomial -> Polynomial -> Polynomial
 polynomialGcd p (Polynomial []) = p

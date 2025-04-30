@@ -165,7 +165,7 @@ modularPolynomialIsNum = TestList [
   "2x^2 + 2 mod 5" ~=? printModularPolynomial (negate mp),
   "3x + 3 mod 5" ~=? printModularPolynomial (negate mq),
   "x^3 + 3x^2 + 2x + 2 mod 5" ~=? printModularPolynomial (negate mr),
-  "36x^4 - 72x^2 + 36" ~=? printPolynomial (p10^(2::Int)*p11^(2::Int)),
+  "36x^4 - 72x^2 + 36" ~=? printPolynomial ((p10*p10)*(p11*p11)),
   () ~=? ()]
 
 modularPolynomialTests :: Test
