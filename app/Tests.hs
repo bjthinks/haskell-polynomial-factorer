@@ -220,7 +220,12 @@ polynomialOpTests = TestList [
   (-4,"5x^2","-10x^2") ~=? showStep (divisionStep p6 q),
   (10,"-1","20x^2 + 80x + 30") ~=? showStep (divisionStep r p6),
   (8,"5x^3","0") ~=? showStep (divisionStep p6 p7),
+  (1,"0","0") ~=? showDivision (divide (Polynomial []) p3),
+  (1,"0",printPolynomial p5) ~=? showDivision (divide p5 p4),
   (1,"1","2") ~=? showDivision (divide p1 p2),
+  (1,"x - 1","-1") ~=? showDivision (divide p3 p1),
+  (16,"x + 1","0") ~=? showDivision (divide p1 p7),
+  (16,"x^3 + 3","0") ~=? showDivision (divide p4 p7),
   () ~=? ()]
   where
     showStep (constant, quotient, remainder)

@@ -114,5 +114,17 @@ divisionStep dividend divisor =
 
 -- divide dividend divisor = (constant, quotient, remainder)
 divide :: Polynomial -> Polynomial -> (Coeff, Polynomial, Polynomial)
-divide _ _ {-dividend divisor-} =
-  undefined
+divide startingDividend divisor =
+  let (c, q, r) = divide' startingDividend
+  in (c, Polynomial q, r)
+  where
+    divide' :: Polynomial -> (Coeff, [Term], Polynomial)
+    divide' dividend
+      | divisor == Polynomial [] = error
+        "attempt to divide a polynomial by zero"
+      | dividend == Polynomial [] = (1, [], Polynomial [])
+      | degree dividend < degree divisor = (1, [], dividend)
+      | otherwise =
+        let (c1, q1, r1) = divisionStep dividend divisor
+            (c2, q2, r2) = divide' r1
+        in (c1*c2, q1:q2, r2)
