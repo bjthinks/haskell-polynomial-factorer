@@ -131,3 +131,10 @@ divide startingDividend divisor =
         let (c1, q1, r1) = divisionStep dividend divisor
             (c2, q2, r2) = divide' r1
         in (c1*c2, multiplyTermByTerm (Term c2 0) q1 : q2, r2)
+
+content :: Polynomial -> Coeff
+content (Polynomial []) = error "attempt to take content of zero polynomial"
+content (Polynomial (t:ts)) = content' (termCoeff t) ts
+  where
+    content' c [] = c
+    content' c (u:us) = content' (gcd c (termCoeff u)) us

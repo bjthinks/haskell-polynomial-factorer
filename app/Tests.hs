@@ -238,6 +238,11 @@ polynomialOpTests = TestList [
   (8,"4x^4 + 2x^2 - 127","8x - 159") ~=?
     showDivision (divide (parsePolynomial "x^6-32x^2+x-4")
                   (parsePolynomial "2x^2-1")),
+  1 ~=? content p1,
+  1 ~=? content p4,
+  10 ~=? content p6,
+  16 ~=? content p7,
+  2 ~=? content (parsePolynomial "8x^3-6x^2+16x-30"),
   () ~=? ()]
   where
     showStep (constant, quotient, remainder)
