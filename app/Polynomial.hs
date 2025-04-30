@@ -10,10 +10,10 @@ printPolynomial :: Polynomial -> String
 printPolynomial (Polynomial []) = "0"
 printPolynomial (Polynomial [t]) = prettyPrintTerm t
   where
-    prettyPrintTerm (c,0) = show c
-    prettyPrintTerm (1,e) = prettyPrintPower e
-    prettyPrintTerm (-1,e) = "-" ++ prettyPrintPower e
-    prettyPrintTerm (c,e) = show c ++ prettyPrintPower e
+    prettyPrintTerm (Term c 0) = show c
+    prettyPrintTerm (Term 1 e) = prettyPrintPower e
+    prettyPrintTerm (Term (-1) e) = "-" ++ prettyPrintPower e
+    prettyPrintTerm (Term c e) = show c ++ prettyPrintPower e
     prettyPrintPower 1 = "x"
     prettyPrintPower e = "x^" ++ show e
 printPolynomial (Polynomial (t:ts)) =
@@ -26,78 +26,90 @@ printPolynomial (Polynomial (t:ts)) =
 makePolynomial :: [Term] -> Polynomial
 makePolynomial = Polynomial . eliminateZeros . addLikeTerms . sortTerms
   where
+    eliminateZeros :: [Term] -> [Term]
     eliminateZeros [] = []
-    eliminateZeros ((0,_):ts) = ts
+    eliminateZeros ((Term 0 _):ts) = ts
     eliminateZeros (t:ts) = t : eliminateZeros ts
+    addLikeTerms :: [Term] -> [Term]
     addLikeTerms [] = []
     addLikeTerms [t] = [t]
-    addLikeTerms (t1@(c1,e1):t2s@((c2,e2):ts))
-      | e1 == e2 = addLikeTerms ((c1+c2,e1):ts)
+    addLikeTerms (t1@(Term c1 e1):t2s@((Term c2 e2):ts))
+      | e1 == e2 = addLikeTerms ((Term (c1+c2) e1):ts)
       | otherwise = t1 : addLikeTerms t2s
-    sortTerms = reverse . sortOn snd
+    sortTerms :: [Term] -> [Term]
+    sortTerms = reverse . sortOn termExponent -- TODO
+
+multiplyTermByList :: Term -> [Term] -> [Term]
+multiplyTermByList _ [] = []
+multiplyTermByList t@(Term c1 e1) (Term c2 e2 : ts) =
+  Term (c1*c2) (e1+e2) : multiplyTermByList t ts
+
+multiplyTermByPolynomial :: Term -> Polynomial -> Polynomial
+multiplyTermByPolynomial t (Polynomial ts) =
+  Polynomial (multiplyTermByList t ts)
 
 instance Num Polynomial where
   Polynomial xs + Polynomial ys = Polynomial $ addTerms xs ys
     where
       addTerms ps [] = ps
       addTerms [] qs = qs
-      addTerms allps@(t1@(c1,e1):ps) allqs@(t2@(c2,e2):qs)
+      addTerms allps@(t1@(Term c1 e1):ps) allqs@(t2@(Term c2 e2):qs)
         | e1 > e2 = t1 : addTerms ps allqs
         | e1 < e2 = t2 : addTerms allps qs
         | c1+c2 == 0 = addTerms ps qs
-        | otherwise = (c1+c2,e1) : addTerms ps qs
+        | otherwise = Term (c1+c2) e1 : addTerms ps qs
   -- * could be made more efficient
   -- for instance, join together like terms before collecting all possible
   -- cross terms into one giant list...
   Polynomial xs * Polynomial ys = makePolynomial $ multiplyTerms xs ys
     where
       multiplyTerms [] _ = []
-      multiplyTerms (p:ps) qs = multiplyTerm p qs ++ multiplyTerms ps qs
-      multiplyTerm _ [] = []
-      multiplyTerm t@(c1,e1) ((c2,e2):ts) = (c1*c2,e1+e2) : multiplyTerm t ts
+      multiplyTerms (p:ps) qs = multiplyTermByList p qs ++
+                                multiplyTerms ps qs
   negate (Polynomial xs) = Polynomial $ negateTerms xs
     where
       negateTerms [] = []
-      negateTerms ((c,e):ts) = (-c,e) : negateTerms ts
+      negateTerms ((Term c e):ts) = Term (-c) e : negateTerms ts
   abs _ = error "No abs for Polynomial"
   signum _ = error "No signum for Polynomial"
-  fromInteger c = makePolynomial [(fromInteger c,0)]
+  fromInteger c = makePolynomial [Term( fromInteger c) 0]
 
 derivative :: Polynomial -> Polynomial
 derivative (Polynomial ts) = Polynomial (applyDiff ts)
   where
     applyDiff [] = []
-    applyDiff [(_,0)] = []
-    applyDiff ((c,e):us) = (c*e,e-1) : applyDiff us
+    applyDiff [Term _ 0] = []
+    applyDiff (Term c e : us) = Term (c*e) (e-1) : applyDiff us
 
 leadingTerm :: Polynomial -> Term
-leadingTerm (Polynomial []) = (0,0)
+leadingTerm (Polynomial []) = error "zero polynomial has no leading term"
 leadingTerm (Polynomial ts) = head ts
 
 leadingCoeff :: Polynomial -> Coeff
-leadingCoeff = fst . leadingTerm
+leadingCoeff = termCoeff . leadingTerm
 
 degree :: Polynomial -> Exponent
-degree = snd . leadingTerm
+degree = termExponent . leadingTerm
 
 constantPolynomial :: Coeff -> Polynomial
 constantPolynomial 0 = Polynomial []
-constantPolynomial c = Polynomial [(c,0)]
+constantPolynomial c = Polynomial [Term c 0]
 
 -- divisionStep dividend divisor = (c, q, r)
 -- so that q is the leading term of the quotient (without a denominator c)
 -- and c * dividend = divisor * q + r
-divisionStep :: Polynomial -> Polynomial -> (Coeff, Polynomial, Polynomial)
+divisionStep :: Polynomial -> Polynomial -> (Coeff, Term, Polynomial)
 divisionStep _ (Polynomial []) = error "attempt to divide a polynomial by 0"
-divisionStep (Polynomial []) _ = (1, Polynomial [], Polynomial [])
+divisionStep (Polynomial []) _ = error "no terms to divide"
 divisionStep dividend divisor =
-  let (dividendLeadingCoeff, dividendDegree) = leadingTerm dividend
-      (divisorLeadingCoeff, divisorDegree) = leadingTerm divisor
+  let Term dividendLeadingCoeff dividendDegree = leadingTerm dividend
+      Term divisorLeadingCoeff divisorDegree = leadingTerm divisor
       gcdOfLeadingCoeffs = gcd dividendLeadingCoeff divisorLeadingCoeff
-      quotient = Polynomial [(dividendLeadingCoeff `div` gcdOfLeadingCoeffs,
-                              dividendDegree - divisorDegree)]
+      quotient = Term (dividendLeadingCoeff `div` gcdOfLeadingCoeffs)
+                 (dividendDegree - divisorDegree)
       constant = divisorLeadingCoeff `div` gcdOfLeadingCoeffs
-      remainder = constantPolynomial constant * dividend - divisor * quotient
+      remainder = constantPolynomial constant * dividend -
+                  multiplyTermByPolynomial quotient divisor
   in (constant, quotient, remainder)
 
 -- divide dividend divisor = (quotient, remainder)

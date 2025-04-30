@@ -2,4 +2,5 @@ module Defs where
 
 type Coeff = Int
 type Exponent = Int
-type Term = (Coeff,Exponent)
+data Term = Term { termCoeff :: Coeff, termExponent :: Exponent }
+  deriving (Eq, Show, Read)
