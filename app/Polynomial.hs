@@ -111,7 +111,7 @@ divisionStep dividend divisor =
       quotient = Term (dividendLeadingCoeff `div` gcdOfLeadingCoeffs)
                  (dividendDegree - divisorDegree)
       constant = divisorLeadingCoeff `div` gcdOfLeadingCoeffs
-      remainder = constantPolynomial constant * dividend -
+      remainder = multiplyTermByPolynomial (Term constant 0) dividend -
                   multiplyTermByPolynomial quotient divisor
   in (constant, quotient, remainder)
 
