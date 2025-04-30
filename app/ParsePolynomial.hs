@@ -66,18 +66,18 @@ pGeneralTerm = do
   pX
   pCarat
   e <- pExponent
-  return (c,e)
+  return $ Term c e
 
 pLinearTerm :: MyParser Term
 pLinearTerm = do
   c <- pMaybeCoeff
   pX
-  return (c,1)
+  return $ Term c 1
 
 pConstantTerm :: MyParser Term
 pConstantTerm = do
   c <- pCoeff
-  return (c,0)
+  return $ Term c 0
 
 pTerm :: MyParser Term
 pTerm = pGeneralTerm ||| pLinearTerm ||| pConstantTerm
@@ -85,9 +85,9 @@ pTerm = pGeneralTerm ||| pLinearTerm ||| pConstantTerm
 pSignedTerm :: MyParser Term
 pSignedTerm = do
   s <- pSign
-  (c,e) <- pTerm
+  Term c e <- pTerm
   let sc = if s == '+' then c else -c
-  return (sc,e)
+  return $ Term sc e
 
 pLeadingTerm :: MyParser Term
 pLeadingTerm = pSignedTerm ||| pTerm

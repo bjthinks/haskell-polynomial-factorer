@@ -11,58 +11,65 @@ import SquareFree
 printPolynomialTests :: Test
 printPolynomialTests = TestList [
   "PrettyPrint 0" ~: "0" ~=? printPolynomial (Polynomial []),
-  "PrettyPrint 1" ~: "1" ~=? printPolynomial (Polynomial [(1,0)]),
-  "PrettyPrint 5" ~: "5" ~=? printPolynomial (Polynomial [(5,0)]),
-  "PrettyPrint -1" ~: "-1" ~=? printPolynomial (Polynomial [(-1,0)]),
-  "PrettyPrint -7" ~: "-7" ~=? printPolynomial (Polynomial [(-7,0)]),
-  "PrettyPrint x" ~: "x" ~=? printPolynomial (Polynomial [(1,1)]),
-  "PrettyPrint 3x" ~: "3x" ~=? printPolynomial (Polynomial [(3,1)]),
-  "PrettyPrint -x" ~: "-x" ~=? printPolynomial (Polynomial [(-1,1)]),
-  "PrettyPrint -5x" ~: "-5x" ~=? printPolynomial (Polynomial [(-5,1)]),
-  "PrettyPrint x^2" ~: "x^2" ~=? printPolynomial (Polynomial [(1,2)]),
-  "PrettyPrint 3x^2" ~: "3x^2" ~=? printPolynomial (Polynomial [(3,2)]),
-  "PrettyPrint -x^2" ~: "-x^2" ~=? printPolynomial (Polynomial [(-1,2)]),
-  "PrettyPrint -5x^2" ~: "-5x^2" ~=? printPolynomial (Polynomial [(-5,2)]),
+  "PrettyPrint 1" ~: "1" ~=? printPolynomial (Polynomial [Term 1 0]),
+  "PrettyPrint 5" ~: "5" ~=? printPolynomial (Polynomial [Term 5 0]),
+  "PrettyPrint -1" ~: "-1" ~=? printPolynomial (Polynomial [Term (-1) 0]),
+  "PrettyPrint -7" ~: "-7" ~=? printPolynomial (Polynomial [Term (-7) 0]),
+  "PrettyPrint x" ~: "x" ~=? printPolynomial (Polynomial [Term 1 1]),
+  "PrettyPrint 3x" ~: "3x" ~=? printPolynomial (Polynomial [Term 3 1]),
+  "PrettyPrint -x" ~: "-x" ~=? printPolynomial (Polynomial [Term (-1) 1]),
+  "PrettyPrint -5x" ~: "-5x" ~=? printPolynomial (Polynomial [Term (-5) 1]),
+  "PrettyPrint x^2" ~: "x^2" ~=? printPolynomial (Polynomial [Term 1 2]),
+  "PrettyPrint 3x^2" ~: "3x^2" ~=? printPolynomial (Polynomial [Term 3 2]),
+  "PrettyPrint -x^2" ~: "-x^2" ~=? printPolynomial (Polynomial [Term (-1) 2]),
+  "PrettyPrint -5x^2" ~: "-5x^2" ~=? printPolynomial (Polynomial [Term (-5) 2]),
   "PrettyPrint -53x^27" ~: "-53x^27" ~=?
-    printPolynomial (Polynomial [(-53,27)]),
-  "PrettyPrint x+1" ~: "x + 1" ~=? printPolynomial (Polynomial [(1,1),(1,0)]),
-  "PrettyPrint x-1" ~: "x - 1" ~=? printPolynomial (Polynomial [(1,1),(-1,0)]),
+    printPolynomial (Polynomial [Term (-53) 27]),
+  "PrettyPrint x+1" ~: "x + 1" ~=?
+    printPolynomial (Polynomial [Term 1 1, Term 1 0]),
+  "PrettyPrint x-1" ~: "x - 1" ~=?
+    printPolynomial (Polynomial [Term 1 1, Term (-1) 0]),
   "PrettyPrint -x+1" ~: "-x + 1" ~=?
-    printPolynomial (Polynomial [(-1,1),(1,0)]),
+    printPolynomial (Polynomial [Term (-1) 1, Term 1 0]),
   "PrettyPrint -x-1" ~: "-x - 1" ~=?
-    printPolynomial (Polynomial [(-1,1),(-1,0)]),
-  "PrettyPrint 5x+3" ~: "5x + 3" ~=? printPolynomial (Polynomial [(5,1),(3,0)]),
+    printPolynomial (Polynomial [Term (-1) 1, Term (-1) 0]),
+  "PrettyPrint 5x+3" ~: "5x + 3" ~=?
+    printPolynomial (Polynomial [Term 5 1, Term 3 0]),
   "PrettyPrint 5x-3" ~: "5x - 3" ~=?
-    printPolynomial (Polynomial [(5,1),(-3,0)]),
+    printPolynomial (Polynomial [Term 5 1, Term (-3) 0]),
   "PrettyPrint -5x+3" ~: "-5x + 3" ~=?
-    printPolynomial (Polynomial [(-5,1),(3,0)]),
+    printPolynomial (Polynomial [Term (-5) 1, Term 3 0]),
   "PrettyPrint -5x-3" ~: "-5x - 3" ~=?
-    printPolynomial (Polynomial [(-5,1),(-3,0)]),
+    printPolynomial (Polynomial [Term (-5) 1, Term (-3) 0]),
   "PrettyPrint x^2+x+1" ~: "x^2 + x + 1" ~=?
-    printPolynomial (Polynomial [(1,2),(1,1),(1,0)]),
+    printPolynomial (Polynomial [Term 1 2, Term 1 1, Term 1 0]),
   "PrettyPrint -x^2+x+1" ~: "-x^2 + x + 1" ~=?
-    printPolynomial (Polynomial [(-1,2),(1,1),(1,0)]),
+    printPolynomial (Polynomial [Term (-1) 2, Term 1 1, Term 1 0]),
   "PrettyPrint x^2-x+1" ~: "x^2 - x + 1" ~=?
-    printPolynomial (Polynomial [(1,2),(-1,1),(1,0)]),
+    printPolynomial (Polynomial [Term 1 2, Term (-1) 1, Term 1 0]),
   "PrettyPrint 4x^2+4x+1" ~: "4x^2 + 4x + 1" ~=?
-    printPolynomial (Polynomial [(4,2),(4,1),(1,0)]),
+    printPolynomial (Polynomial [Term 4 2, Term 4 1, Term 1 0]),
   "PrettyPrint -4x^2-4x-1" ~: "-4x^2 - 4x - 1" ~=?
-    printPolynomial (Polynomial [(-4,2),(-4,1),(-1,0)]),
+    printPolynomial (Polynomial [Term (-4) 2, Term (-4) 1, Term (-1) 0]),
   () ~=? ()]
 
 makePolynomialTests :: Test
 makePolynomialTests = TestList [
   "0" ~=? printPolynomial (makePolynomial []),
-  "0" ~=? printPolynomial (makePolynomial [(0,0)]),
-  "0" ~=? printPolynomial (makePolynomial [(0,1)]),
-  "0" ~=? printPolynomial (makePolynomial [(0,2)]),
-  "5" ~=? printPolynomial (makePolynomial [(3,2),(5,0),(-3,2)]),
-  "1" ~=? printPolynomial (makePolynomial [(1,0)]),
-  "x + 1" ~=? printPolynomial (makePolynomial [(1,0),(2,1),(-1,1)]),
-  "x - 1" ~=? printPolynomial (makePolynomial [(1,0),(2,1),(-2,0),(-1,1)]),
-  "-x + 1" ~=? printPolynomial (makePolynomial [(-2,1),(1,0),(2,1),(-1,1)]),
+  "0" ~=? printPolynomial (makePolynomial [Term 0 0]),
+  "0" ~=? printPolynomial (makePolynomial [Term 0 1]),
+  "0" ~=? printPolynomial (makePolynomial [Term 0 2]),
+  "5" ~=? printPolynomial (makePolynomial [Term 3 2, Term 5 0, Term (-3) 2]),
+  "1" ~=? printPolynomial (makePolynomial [Term 1 0]),
+  "x + 1" ~=? printPolynomial
+    (makePolynomial [Term 1 0, Term 2 1, Term (-1) 1]),
+  "x - 1" ~=? printPolynomial
+    (makePolynomial [Term 1 0, Term 2 1, Term (-2) 0, Term (-1) 1]),
+  "-x + 1" ~=? printPolynomial
+    (makePolynomial [Term (-2) 1, Term 1 0, Term 2 1, Term (-1) 1]),
   "-x - 1" ~=? printPolynomial
-    (makePolynomial [(-2,1),(1,0),(2,1),(-1,1),(-2,0)]),
+    (makePolynomial [Term (-2) 1, Term 1 0, Term 2 1, Term (-1) 1,
+                     Term (-2) 0]),
   () ~=? ()]
 
 parsePolynomialTests :: Test
@@ -121,14 +128,14 @@ polynomialTests = TestList
 printModularPolynomialTests :: Test
 printModularPolynomialTests = TestList [
   "0 mod 5" ~=? printModularPolynomial (ModularPolynomial 5 []),
-  "3 mod 5" ~=? printModularPolynomial (ModularPolynomial 5 [(3,0)]),
-  "x^2 mod 5" ~=? printModularPolynomial (ModularPolynomial 5 [(1,2)]),
+  "3 mod 5" ~=? printModularPolynomial (ModularPolynomial 5 [Term 3 0]),
+  "x^2 mod 5" ~=? printModularPolynomial (ModularPolynomial 5 [Term 1 2]),
   () ~=? ()]
 
 makeModularPolynomialTests :: Test
 makeModularPolynomialTests = TestList [
   "4x^2 + 3 mod 5" ~=? printModularPolynomial
-    (makeModularPolynomial 5 [(-2,0),(3,1),(7,1),(-1,2)]),
+    (makeModularPolynomial 5 [Term (-2) 0, Term 3 1, Term 7 1, Term (-1) 2]),
   () ~=? ()]
 
 mp :: ModularPolynomial
@@ -199,15 +206,15 @@ polynomialOpTests = TestList [
   "2x" ~=? printPolynomial (derivative p3),
   "3x^2" ~=? printPolynomial (derivative p4),
   "1" ~=? printPolynomial (derivative p5),
-  (0,0) ~=? leadingTerm (Polynomial []),
-  (3,2) ~=? leadingTerm p,
-  (-8,1) ~=? leadingTerm q,
-  (-1,3) ~=? leadingTerm r,
-  (1,1) ~=? leadingTerm p1,
-  (1,1) ~=? leadingTerm p2,
-  (1,2) ~=? leadingTerm p3,
-  (1,3) ~=? leadingTerm p4,
-  (1,1) ~=? leadingTerm p5,
+  Term 0 0 ~=? leadingTerm (Polynomial []),
+  Term 3 2 ~=? leadingTerm p,
+  Term (-8) 1 ~=? leadingTerm q,
+  Term (-1) 3 ~=? leadingTerm r,
+  Term 1 1 ~=? leadingTerm p1,
+  Term 1 1 ~=? leadingTerm p2,
+  Term 1 2 ~=? leadingTerm p3,
+  Term 1 3 ~=? leadingTerm p4,
+  Term 1 1 ~=? leadingTerm p5,
   (-8,"3x","-46x + 56") ~=? showStep (divisionStep p q),
   (3,"-x","11x^2 + 17x + 9") ~=? showStep (divisionStep r p),
   (-8,"-x^2","-14x^2 - 64x - 24") ~=? showStep (divisionStep r q),
@@ -217,7 +224,8 @@ polynomialOpTests = TestList [
   () ~=? ()]
   where
     showStep (constant, quotient, remainder)
-      = (constant, printPolynomial quotient, printPolynomial remainder)
+      = (constant, printPolynomial (Polynomial [quotient]),
+         printPolynomial remainder)
 
 squareFreeTests :: Test
 squareFreeTests = TestList [
