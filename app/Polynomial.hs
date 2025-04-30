@@ -139,6 +139,12 @@ content (Polynomial (t:ts)) = content' (termCoeff t) ts
     content' c [] = c
     content' c (u:us) = content' (gcd c (termCoeff u)) us
 
+divideByConstant :: Coeff -> Polynomial -> Polynomial
+divideByConstant c (Polynomial ts) = Polynomial $ dbc ts
+  where
+    dbc [] = []
+    dbc ((Term coeff exponent):rest) = Term (coeff `div` c) exponent : dbc rest
+
 polynomialGcd :: Polynomial -> Polynomial -> Polynomial
 polynomialGcd p (Polynomial []) = p
 polynomialGcd (Polynomial []) q = q
