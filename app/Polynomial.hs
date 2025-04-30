@@ -112,7 +112,7 @@ divisionStep dividend divisor =
                   multiplyTermByPolynomial quotient divisor
   in (constant, quotient, remainder)
 
--- divide dividend divisor = (quotient, remainder)
-divide :: Polynomial -> Polynomial -> (Polynomial, Polynomial)
+-- divide dividend divisor = (constant, quotient, remainder)
+divide :: Polynomial -> Polynomial -> (Coeff, Polynomial, Polynomial)
 divide _ _ {-dividend divisor-} =
   undefined

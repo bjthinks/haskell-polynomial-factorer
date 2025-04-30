@@ -220,12 +220,23 @@ polynomialOpTests = TestList [
   (-4,"5x^2","-10x^2") ~=? showStep (divisionStep p6 q),
   (10,"-1","20x^2 + 80x + 30") ~=? showStep (divisionStep r p6),
   (8,"5x^3","0") ~=? showStep (divisionStep p6 p7),
+  (1,"1","2") ~=? showDivision (divide p1 p2),
   () ~=? ()]
   where
     showStep (constant, quotient, remainder)
       = (constant, printPolynomial (Polynomial [quotient]),
          printPolynomial remainder)
-
+    showDivision (constant, quotient, remainder)
+      = (constant, printPolynomial quotient, printPolynomial remainder)
+{-
+p1 = parsePolynomial "x+1"
+p2 = parsePolynomial "x-1"
+p3 = parsePolynomial "x^2-2"
+p4 = parsePolynomial "x^3+3"
+p5 = parsePolynomial "x+5"
+p6 = parsePolynomial "10x^3"
+p7 = parsePolynomial "16"
+-}
 squareFreeTests :: Test
 squareFreeTests = TestList [
   [("x + 1)",1)] ~=? printResults (squareFree $ p1),
