@@ -138,3 +138,10 @@ content (Polynomial (t:ts)) = content' (termCoeff t) ts
   where
     content' c [] = c
     content' c (u:us) = content' (gcd c (termCoeff u)) us
+
+polynomialGcd :: Polynomial -> Polynomial -> Polynomial
+polynomialGcd p (Polynomial []) = p
+polynomialGcd (Polynomial []) q = q
+polynomialGcd p q =
+  let (_,_,r) = divide p q
+  in polynomialGcd q r

@@ -202,6 +202,12 @@ p8 = parsePolynomial "x^3 - x^2 - x + 1"
 p9 :: Polynomial
 p9 = parsePolynomial "3x^2 - 2x - 1"
 
+p10 :: Polynomial
+p10 = parsePolynomial "2x-2"
+
+p11 :: Polynomial
+p11 = parsePolynomial "3x+3"
+
 polynomialOpTests :: Test
 polynomialOpTests = TestList [
   "6x + 5" ~=? printPolynomial (derivative p),
@@ -243,6 +249,11 @@ polynomialOpTests = TestList [
   10 ~=? content p6,
   16 ~=? content p7,
   2 ~=? content (parsePolynomial "8x^3-6x^2+16x-30"),
+  p1 ~=? polynomialGcd p1 (p1*p2),
+  p1 ~=? polynomialGcd (p1*p2) p1,
+  p1*p2 ~=? polynomialGcd (p1^(3 :: Int) * p2) (p1 * p2^(5 :: Int)),
+  p10^(2::Int)*p11^(2::Int) ~=?
+    polynomialGcd (p10^(5::Int) * p11^(2::Int)) (p10^(2::Int) * p11^(3::Int)),
   () ~=? ()]
   where
     showStep (constant, quotient, remainder)
@@ -260,6 +271,8 @@ p6 = parsePolynomial "10x^3"
 p7 = parsePolynomial "16"
 p8 = parsePolynomial "x^3 - x^2 - x + 1"
 p9 = parsePolynomial "3x^2 - 2x - 1"
+p10 = parsePolynomial "2x-2"
+p11 = parsePolynomial "3x+3"
 -}
 squareFreeTests :: Test
 squareFreeTests = TestList [
