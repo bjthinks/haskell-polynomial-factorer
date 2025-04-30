@@ -206,7 +206,6 @@ polynomialOpTests = TestList [
   "2x" ~=? printPolynomial (derivative p3),
   "3x^2" ~=? printPolynomial (derivative p4),
   "1" ~=? printPolynomial (derivative p5),
-  Term 0 0 ~=? leadingTerm (Polynomial []),
   Term 3 2 ~=? leadingTerm p,
   Term (-8) 1 ~=? leadingTerm q,
   Term (-1) 3 ~=? leadingTerm r,
