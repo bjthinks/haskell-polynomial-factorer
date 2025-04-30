@@ -39,10 +39,13 @@ makePolynomial = Polynomial . eliminateZeros . addLikeTerms . sortTerms
     sortTerms :: [Term] -> [Term]
     sortTerms = reverse . sortOn termExponent -- TODO
 
+multiplyTermByTerm :: Term -> Term -> Term
+multiplyTermByTerm (Term c1 e1) (Term c2 e2) = Term (c1*c2) (e1+e2)
+
 multiplyTermByList :: Term -> [Term] -> [Term]
 multiplyTermByList _ [] = []
-multiplyTermByList t@(Term c1 e1) (Term c2 e2 : ts) =
-  Term (c1*c2) (e1+e2) : multiplyTermByList t ts
+multiplyTermByList t1 (t2 : ts) =
+  multiplyTermByTerm t1 t2 : multiplyTermByList t1 ts
 
 multiplyTermByPolynomial :: Term -> Polynomial -> Polynomial
 multiplyTermByPolynomial t (Polynomial ts) =
@@ -127,4 +130,4 @@ divide startingDividend divisor =
       | otherwise =
         let (c1, q1, r1) = divisionStep dividend divisor
             (c2, q2, r2) = divide' r1
-        in (c1*c2, q1:q2, r2)
+        in (c1*c2, multiplyTermByTerm (Term c2 0) q1 : q2, r2)
