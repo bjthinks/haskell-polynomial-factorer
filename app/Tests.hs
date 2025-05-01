@@ -258,6 +258,8 @@ polynomialOpTests = TestList [
   p1 ~=? polynomialGcd (Polynomial []) p1,
   constantPolynomial 2 * p1*p2*p3*p4 ~=?
     polynomialGcd (p1*p2*p3*p4*p5*p6) (p1*p2*p3*p4*p7*p8),
+  "1" ~=? printPolynomial (polynomialGcd (parsePolynomial "x^2-1")
+                           (parsePolynomial "2x")),
   () ~=? ()]
   where
     showStep (constant, quotient, remainder)
@@ -268,9 +270,9 @@ polynomialOpTests = TestList [
 
 squareFreeTests :: Test
 squareFreeTests = TestList [
-  [("x + 1)",1)] ~=? printResults (squareFree $ p1),
-  [("x + 1)",2)] ~=? printResults (squareFree $ p1*p1),
-  [("x^2 - 1)",1)] ~=? printResults (squareFree $ p1*p2),
+  [("x + 1",1)] ~=? printResults (squareFree $ p1),
+  [("x + 1",2)] ~=? printResults (squareFree $ p1*p1),
+  [("x^2 - 1",1)] ~=? printResults (squareFree $ p1*p2),
   [("x + 1",2),("x - 1",1)] ~=? printResults (squareFree $ p1*p1*p2),
   () ~=? ()]
   where
