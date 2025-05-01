@@ -11,7 +11,7 @@ squareFree f =
       b1 = divide' f a0
       c1 = divide' f' a0
       d1 = c1 - derivative b1
-      in unsafePerformIO (print (printPolynomial f') >> print (printPolynomial a0) >> print (printPolynomial b1) >> print (printPolynomial c1) >> print (printPolynomial d1)) `seq` yun b1 d1 1
+      in unsafePerformIO (print (printPolynomial f') >> print (printPolynomial a0) >> print (printPolynomial b1) >> print (printPolynomial c1) >> print (printPolynomial d1)) `seq` reverse (yun b1 d1 1)
   where
     yun (Polynomial [Term _ 0]) _ _ = []
     yun bi di i = unsafePerformIO (print (printPolynomial bi) >> print (printPolynomial di) >> print i) `seq`
