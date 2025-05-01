@@ -28,7 +28,7 @@ makePolynomial = Polynomial . eliminateZeros . addLikeTerms . sortTerms
   where
     eliminateZeros :: [Term] -> [Term]
     eliminateZeros [] = []
-    eliminateZeros (Term 0 _ : ts) = ts
+    eliminateZeros (Term 0 _ : ts) = eliminateZeros ts
     eliminateZeros (t:ts) = t : eliminateZeros ts
     addLikeTerms :: [Term] -> [Term]
     addLikeTerms [] = []
