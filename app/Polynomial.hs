@@ -51,6 +51,9 @@ multiplyTermByPolynomial :: Term -> Polynomial -> Polynomial
 multiplyTermByPolynomial t (Polynomial ts) =
   Polynomial (multiplyTermByList t ts)
 
+multiplyConstantByPolynomial :: Coeff -> Polynomial -> Polynomial
+multiplyConstantByPolynomial c p = multiplyTermByPolynomial (Term c 0) p
+
 instance Num Polynomial where
   Polynomial xs + Polynomial ys = Polynomial $ addTerms xs ys
     where
@@ -154,8 +157,11 @@ divideBySignedContent p = divideByConstant (signedContent p) p
 polynomialGcd :: Polynomial -> Polynomial -> Polynomial
 polynomialGcd p (Polynomial []) = p
 polynomialGcd (Polynomial []) q = q
-polynomialGcd p q = pgcd p' q'
+polynomialGcd p q = multiplyConstantByPolynomial g $ pgcd p' q'
   where
+    c = content p
+    d = content q
+    g = gcd c d
     p' = divideBySignedContent p
     q' = divideBySignedContent q
     pgcd u (Polynomial []) = u
