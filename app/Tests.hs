@@ -1,6 +1,5 @@
 module Tests where
 
-import Data.List
 import Test.HUnit
 import Defs
 import Polynomial
@@ -174,9 +173,6 @@ modularPolynomialTests = TestList
   [printModularPolynomialTests, makeModularPolynomialTests,
     parseModularPolynomialTests, modularPolynomialIsNum]
 
-printResults :: [(Polynomial, Exponent)] -> [(String, Exponent)]
-printResults = map (\(poly,expo) -> (printPolynomial poly,expo)) . sortOn snd
-
 p1 :: Polynomial
 p1 = parsePolynomial "x+1"
 
@@ -277,10 +273,12 @@ squareFreeTests = TestList [
   [("x^2 - 1)",1)] ~=? printResults (squareFree $ p1*p2),
   [("x + 1",2),("x - 1",1)] ~=? printResults (squareFree $ p1*p1*p2),
   () ~=? ()]
+  where
+    printResults = map (\(poly,expo) -> (printPolynomial poly,expo))
 
 tests :: Test
-tests = TestList [polynomialTests, modularPolynomialTests, polynomialOpTests{-,
-                  squareFreeTests-}]
+tests = TestList [polynomialTests, modularPolynomialTests, polynomialOpTests,
+                  squareFreeTests]
 
 runTests :: IO Counts
 runTests = runTestTT tests
