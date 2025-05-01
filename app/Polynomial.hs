@@ -154,10 +154,12 @@ divideBySignedContent p = divideByConstant (signedContent p) p
 polynomialGcd :: Polynomial -> Polynomial -> Polynomial
 polynomialGcd p (Polynomial []) = p
 polynomialGcd (Polynomial []) q = q
--- TODO could be made a little more efficient
-polynomialGcd p q = polynomialGcd q' r'
+polynomialGcd p q = pgcd p' q'
   where
     p' = divideBySignedContent p
     q' = divideBySignedContent q
-    (_,_,r) = divide p' q'
-    r' = divideBySignedContent r
+    pgcd u (Polynomial []) = u
+    pgcd u v =
+      let (_,_,w) = divide u v
+          w' = divideBySignedContent w
+      in pgcd v w'
