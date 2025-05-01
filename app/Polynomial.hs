@@ -139,15 +139,25 @@ content (Polynomial (t:ts)) = content' (termCoeff t) ts
     content' c [] = c
     content' c (u:us) = content' (gcd c (termCoeff u)) us
 
+signedContent :: Polynomial -> Coeff
+signedContent p = signum (leadingCoeff p) * content p
+
 divideByConstant :: Coeff -> Polynomial -> Polynomial
 divideByConstant c (Polynomial ts) = Polynomial $ dbc ts
   where
     dbc [] = []
     dbc ((Term coeff expo):rest) = Term (coeff `div` c) expo : dbc rest
 
+divideBySignedContent :: Polynomial -> Polynomial
+divideBySignedContent p = divideByConstant (signedContent p) p
+
 polynomialGcd :: Polynomial -> Polynomial -> Polynomial
 polynomialGcd p (Polynomial []) = p
 polynomialGcd (Polynomial []) q = q
-polynomialGcd p q =
-  let (_,_,r) = divide p q
-  in polynomialGcd q r
+-- TODO could be made a little more efficient
+polynomialGcd p q = polynomialGcd q' r'
+  where
+    p' = divideBySignedContent p
+    q' = divideBySignedContent q
+    (_,_,r) = divide p' q'
+    r' = divideBySignedContent r

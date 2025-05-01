@@ -256,8 +256,10 @@ polynomialOpTests = TestList [
   p1 ~=? polynomialGcd p1 (p1*p2),
   p1 ~=? polynomialGcd (p1*p2) p1,
   p1*p2 ~=? polynomialGcd (p1^(3 :: Int) * p2) (p1 * p2^(5 :: Int)),
-  p10^(2::Int)*p11^(2::Int) ~=?
+  divideBySignedContent (p10^(2::Int)*p11^(2::Int)) ~=?
     polynomialGcd (p10^(5::Int) * p11^(2::Int)) (p10^(2::Int) * p11^(3::Int)),
+  p1 ~=? polynomialGcd p1 (Polynomial []),
+  p1 ~=? polynomialGcd (Polynomial []) p1,
   () ~=? ()]
   where
     showStep (constant, quotient, remainder)
