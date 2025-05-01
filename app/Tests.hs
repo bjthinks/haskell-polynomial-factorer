@@ -277,7 +277,19 @@ squareFreeTests = TestList [
   () ~=? ()]
   where
     printResults = map (\(poly,expo) -> (printPolynomial poly,expo))
-
+{-
+p1 = parsePolynomial "x+1"
+p2 = parsePolynomial "x-1"
+p3 = parsePolynomial "x^2-2"
+p4 = parsePolynomial "x^3+3"
+p5 = parsePolynomial "x+5"
+p6 = parsePolynomial "10x^3"
+p7 = parsePolynomial "16"
+p8 = parsePolynomial "x^3 - x^2 - x + 1"
+p9 = parsePolynomial "3x^2 - 2x - 1"
+p10 = parsePolynomial "2x-2"
+p11 = parsePolynomial "3x+3"
+-}
 tests :: Test
 tests = TestList [polynomialTests, modularPolynomialTests, polynomialOpTests,
                   squareFreeTests]
