@@ -306,8 +306,31 @@ modularPolynomialOpTests = TestList [
   "0 mod 3" ~=? printModularPolynomial (mDerivative m7),
   "x + 2 mod 3" ~=? printModularPolynomial (mDerivative m8),
   "2 mod 3" ~=? printModularPolynomial (mDerivative m9),
+  Term 1 1 ~=? mLeadingTerm m1,
+  Term 1 2 ~=? mLeadingTerm m2,
+  Term 1 7 ~=? mLeadingTerm m3,
+  Term 1 3 ~=? mLeadingTerm m4,
+  Term 1 1 ~=? mLeadingTerm m5,
+  Term 2 3 ~=? mLeadingTerm m6,
+  Term 2 0 ~=? mLeadingTerm m7,
+  Term 1 3 ~=? mLeadingTerm m8,
+  Term 2 1 ~=? mLeadingTerm m9,
+  1 ~=? mLeadingCoeff m3,
+  2 ~=? mLeadingCoeff m6,
+  7 ~=? mDegree m3,
+  3 ~=? mDegree m6,
   () ~=? ()]
-
+{-
+m1 = parseModularPolynomial "x+1 mod 2"
+m2 = parseModularPolynomial "x^2+1 mod 2"
+m3 = parseModularPolynomial "x^7+x^4+x^2+1 mod 2"
+m4 = parseModularPolynomial "x^3+2 mod 3"
+m5 = parseModularPolynomial "x+2 mod 3"
+m6 = parseModularPolynomial "2x^3 mod 3"
+m7 = parseModularPolynomial "2 mod 3"
+m8 = parseModularPolynomial "x^3-x^2-x+1 mod 3"
+m9 = parseModularPolynomial "2x+2 mod 3"
+-}
 squareFreeTests :: Test
 squareFreeTests = TestList [
   (1,[("x + 1",1)]) ~=? printResults (squareFree $ p1),

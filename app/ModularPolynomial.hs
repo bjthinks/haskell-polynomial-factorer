@@ -79,3 +79,14 @@ mDerivative (ModularPolynomial m ts) = ModularPolynomial m (applyDiff ts)
     applyDiff (Term c e : us)
       | e `mod` m == 0 = applyDiff us
       | otherwise = Term ((c*e) `mod` m) (e-1) : applyDiff us
+
+mLeadingTerm :: ModularPolynomial -> Term
+mLeadingTerm (ModularPolynomial _ []) =
+  error "zero polynomial has no leading term"
+mLeadingTerm (ModularPolynomial _ ts) = head ts
+
+mLeadingCoeff :: ModularPolynomial -> Coeff
+mLeadingCoeff = termCoeff . mLeadingTerm
+
+mDegree :: ModularPolynomial -> Exponent
+mDegree = termExponent . mLeadingTerm
