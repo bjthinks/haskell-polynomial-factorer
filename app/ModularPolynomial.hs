@@ -70,3 +70,12 @@ instance Num ModularPolynomial where
   abs _ = error "No abs for ModularPolynomial"
   signum _ = error "No signum for ModularPolynomial"
   fromInteger _ = error "No fromInteger for ModularPolynomial"
+
+mDerivative :: ModularPolynomial -> ModularPolynomial
+mDerivative (ModularPolynomial m ts) = ModularPolynomial m (applyDiff ts)
+  where
+    applyDiff [] = []
+    applyDiff [Term _ 0] = []
+    applyDiff (Term c e : us)
+      | e `mod` m == 0 = applyDiff us
+      | otherwise = Term ((c*e) `mod` m) (e-1) : applyDiff us
