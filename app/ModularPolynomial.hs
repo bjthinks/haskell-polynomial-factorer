@@ -26,6 +26,18 @@ makeModularPolynomial m =
     canonical (Term c e) = Term (c `mod` m) e
     sortTerms = reverse . sortOn termExponent
 
+mMultiplyTermByTerm :: Coeff -> Term -> Term -> Term
+mMultiplyTermByTerm m (Term c1 e1) (Term c2 e2) = Term ((c1*c2) `mod` m) (e1+e2)
+
+mMultiplyTermByList :: Coeff -> Term -> [Term] -> [Term]
+mMultiplyTermByList _ _ [] = []
+mMultiplyTermByList m t1 (t2 : ts) =
+  mMultiplyTermByTerm m t1 t2 : mMultiplyTermByList m t1 ts
+
+mMultiplyTermByPolynomial :: Term -> ModularPolynomial -> ModularPolynomial
+mMultiplyTermByPolynomial t (ModularPolynomial m ts) =
+  ModularPolynomial m (mMultiplyTermByList m t ts)
+
 instance Num ModularPolynomial where
   ModularPolynomial m1 xs + ModularPolynomial m2 ys
     | m1 /= m2 = error "Incompatible modulus in +"
