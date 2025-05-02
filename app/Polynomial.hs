@@ -111,12 +111,12 @@ divisionStep dividend divisor =
   let Term dividendLeadingCoeff dividendDegree = leadingTerm dividend
       Term divisorLeadingCoeff divisorDegree = leadingTerm divisor
       gcdOfLeadingCoeffs = gcd dividendLeadingCoeff divisorLeadingCoeff
-      quotient = Term (dividendLeadingCoeff `div` gcdOfLeadingCoeffs)
-                 (dividendDegree - divisorDegree)
+      quoti = Term (dividendLeadingCoeff `div` gcdOfLeadingCoeffs)
+              (dividendDegree - divisorDegree)
       constant = divisorLeadingCoeff `div` gcdOfLeadingCoeffs
-      remainder = multiplyTermByPolynomial (Term constant 0) dividend -
-                  multiplyTermByPolynomial quotient divisor
-  in (constant, quotient, remainder)
+      remain = multiplyTermByPolynomial (Term constant 0) dividend -
+               multiplyTermByPolynomial quoti divisor
+  in (constant, quoti, remain)
 
 -- divide dividend divisor = (constant, quotient, remainder)
 divide :: Polynomial -> Polynomial -> (Coeff, Polynomial, Polynomial)
@@ -134,6 +134,16 @@ divide startingDividend divisor =
         let (c1, q1, r1) = divisionStep dividend divisor
             (c2, q2, r2) = divide' r1
         in (c1*c2, multiplyTermByTerm (Term c2 0) q1 : q2, r2)
+
+quotient :: Polynomial -> Polynomial -> Polynomial
+quotient dividend divisor = q
+  where
+    (_,q,_) = divide dividend divisor
+
+remainder :: Polynomial -> Polynomial -> Polynomial
+remainder dividend divisor = r
+  where
+    (_,_,r) = divide dividend divisor
 
 content :: Polynomial -> Coeff
 content (Polynomial []) = error "attempt to take content of zero polynomial"
@@ -166,6 +176,6 @@ polynomialGcd p q = multiplyConstantByPolynomial g $ pgcd p' q'
     q' = divideBySignedContent q
     pgcd u (Polynomial []) = u
     pgcd u v =
-      let (_,_,w) = divide u v
+      let w = remainder u v
           w' = divideBySignedContent w
       in pgcd v w'

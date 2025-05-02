@@ -262,11 +262,11 @@ polynomialOpTests = TestList [
                            (parsePolynomial "2x")),
   () ~=? ()]
   where
-    showStep (constant, quotient, remainder)
-      = (constant, printPolynomial (Polynomial [quotient]),
-         printPolynomial remainder)
-    showDivision (constant, quotient, remainder)
-      = (constant, printPolynomial quotient, printPolynomial remainder)
+    showStep (constant, quoti, remain)
+      = (constant, printPolynomial (Polynomial [quoti]),
+         printPolynomial remain)
+    showDivision (constant, quoti, remain)
+      = (constant, printPolynomial quoti, printPolynomial remain)
 
 squareFreeTests :: Test
 squareFreeTests = TestList [
