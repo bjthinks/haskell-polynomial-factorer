@@ -43,9 +43,7 @@ multiplyTermByTerm :: Term -> Term -> Term
 multiplyTermByTerm (Term c1 e1) (Term c2 e2) = Term (c1*c2) (e1+e2)
 
 multiplyTermByList :: Term -> [Term] -> [Term]
-multiplyTermByList _ [] = []
-multiplyTermByList t1 (t2 : ts) =
-  multiplyTermByTerm t1 t2 : multiplyTermByList t1 ts
+multiplyTermByList t = map $ multiplyTermByTerm t
 
 multiplyTermByPolynomial :: Term -> Polynomial -> Polynomial
 multiplyTermByPolynomial t (Polynomial ts) =
