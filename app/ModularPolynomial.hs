@@ -58,10 +58,8 @@ instance Num ModularPolynomial where
     | otherwise = makeModularPolynomial m1 $ multiplyTerms xs ys
     where
       multiplyTerms [] _ = []
-      multiplyTerms (p:ps) qs = multiplyTerm p qs ++ multiplyTerms ps qs
-      multiplyTerm _ [] = []
-      multiplyTerm t@(Term c1 e1) (Term c2 e2 : ts) =
-        Term ((c1*c2) `mod` m1) (e1+e2) : multiplyTerm t ts
+      multiplyTerms (p:ps) qs = mMultiplyTermByList m1 p qs ++
+        multiplyTerms ps qs
   negate (ModularPolynomial m xs) = ModularPolynomial m $ negateTerms xs
     where
       negateTerms [] = []
