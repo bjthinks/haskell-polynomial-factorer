@@ -38,6 +38,9 @@ mMultiplyTermByPolynomial :: Term -> ModularPolynomial -> ModularPolynomial
 mMultiplyTermByPolynomial t (ModularPolynomial m ts) =
   ModularPolynomial m (mMultiplyTermByList m t ts)
 
+mMultiplyConstantByPolynomial :: Coeff -> ModularPolynomial -> ModularPolynomial
+mMultiplyConstantByPolynomial c f = mMultiplyTermByPolynomial (Term c 0) f
+
 instance Num ModularPolynomial where
   ModularPolynomial m1 xs + ModularPolynomial m2 ys
     | m1 /= m2 = error "Incompatible modulus in +"
