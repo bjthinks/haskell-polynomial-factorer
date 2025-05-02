@@ -90,3 +90,8 @@ mLeadingCoeff = termCoeff . mLeadingTerm
 
 mDegree :: ModularPolynomial -> Exponent
 mDegree = termExponent . mLeadingTerm
+
+mConstantPolynomial :: Coeff -> Coeff -> ModularPolynomial
+mConstantPolynomial m c
+  | c `mod` m == 0 = ModularPolynomial m []
+  | otherwise = ModularPolynomial m [Term (c `mod` m) 0]
