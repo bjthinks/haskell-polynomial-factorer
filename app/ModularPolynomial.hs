@@ -26,13 +26,14 @@ makeModularPolynomial m =
     canonical (Term c e) = Term (c `mod` m) e
     sortTerms = reverse . sortOn termExponent
 
+-- NOTE: This function does not check if c1*c2 == 0 mod m!
 mMultiplyTermByTerm :: Coeff -> Term -> Term -> Term
 mMultiplyTermByTerm m (Term c1 e1) (Term c2 e2) = Term ((c1*c2) `mod` m) (e1+e2)
 
 mMultiplyTermByList :: Coeff -> Term -> [Term] -> [Term]
-mMultiplyTermByList _ _ [] = []
-mMultiplyTermByList m t1 (t2 : ts) =
-  mMultiplyTermByTerm m t1 t2 : mMultiplyTermByList m t1 ts
+mMultiplyTermByList m t@(Term c _)
+  | c `mod` m == 0 = const []
+  | otherwise = map $ mMultiplyTermByTerm m t
 
 mMultiplyTermByPolynomial :: Term -> ModularPolynomial -> ModularPolynomial
 mMultiplyTermByPolynomial t (ModularPolynomial m ts) =
