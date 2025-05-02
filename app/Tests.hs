@@ -274,6 +274,11 @@ squareFreeTests = TestList [
   [("x + 1",2)] ~=? printResults (squareFree $ p1*p1),
   [("x^2 - 1",1)] ~=? printResults (squareFree $ p1*p2),
   [("x + 1",2),("x - 1",1)] ~=? printResults (squareFree $ p1*p1*p2),
+  [("x",3)] ~=? printResults (squareFree p6),
+  [("x - 1",2),("x + 1",1)] ~=? printResults (squareFree p8),
+  [("x - 1",2),("x + 1",1)] ~=? printResults (squareFree $ p10*p10*p11),
+  [("x - 1",4),("x + 1",3)] ~=? printResults
+    (squareFree $ p10*p10*p10*p10*p11*p11*p11),
   () ~=? ()]
   where
     printResults = map (\(poly,expo) -> (printPolynomial poly,expo))
