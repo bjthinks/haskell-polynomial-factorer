@@ -268,6 +268,46 @@ polynomialOpTests = TestList [
     showDivision (constant, quoti, remain)
       = (constant, printPolynomial quoti, printPolynomial remain)
 
+m1 :: ModularPolynomial
+m1 = parseModularPolynomial "x+1 mod 2"
+
+m2 :: ModularPolynomial
+m2 = parseModularPolynomial "x^2+1 mod 2"
+
+m3 :: ModularPolynomial
+m3 = parseModularPolynomial "x^7+x^4+x^2+1 mod 2"
+
+m4 :: ModularPolynomial
+m4 = parseModularPolynomial "x^3+2 mod 3"
+
+m5 :: ModularPolynomial
+m5 = parseModularPolynomial "x+2 mod 3"
+
+m6 :: ModularPolynomial
+m6 = parseModularPolynomial "2x^3 mod 3"
+
+m7 :: ModularPolynomial
+m7 = parseModularPolynomial "2 mod 3"
+
+m8 :: ModularPolynomial
+m8 = parseModularPolynomial "x^3-x^2-x+1 mod 3"
+
+m9 :: ModularPolynomial
+m9 = parseModularPolynomial "2x+2 mod 3"
+
+modularPolynomialOpTests :: Test
+modularPolynomialOpTests = TestList [
+  "1 mod 2" ~=? printModularPolynomial (mDerivative m1),
+  "0 mod 2" ~=? printModularPolynomial (mDerivative m2),
+  "x^6 mod 2" ~=? printModularPolynomial (mDerivative m3),
+  "0 mod 3" ~=? printModularPolynomial (mDerivative m4),
+  "1 mod 3" ~=? printModularPolynomial (mDerivative m5),
+  "0 mod 3" ~=? printModularPolynomial (mDerivative m6),
+  "0 mod 3" ~=? printModularPolynomial (mDerivative m7),
+  "x + 2 mod 3" ~=? printModularPolynomial (mDerivative m8),
+  "2 mod 3" ~=? printModularPolynomial (mDerivative m9),
+  () ~=? ()]
+
 squareFreeTests :: Test
 squareFreeTests = TestList [
   (1,[("x + 1",1)]) ~=? printResults (squareFree $ p1),
@@ -285,22 +325,10 @@ squareFreeTests = TestList [
   where
     printResults (Factorization c fs) =
       (c,map (\(poly,expo) -> (printPolynomial poly,expo)) fs)
-{-
-p1 = parsePolynomial "x+1"
-p2 = parsePolynomial "x-1"
-p3 = parsePolynomial "x^2-2"
-p4 = parsePolynomial "x^3+3"
-p5 = parsePolynomial "x+5"
-p6 = parsePolynomial "10x^3"
-p7 = parsePolynomial "16"
-p8 = parsePolynomial "x^3 - x^2 - x + 1"
-p9 = parsePolynomial "3x^2 - 2x - 1"
-p10 = parsePolynomial "2x-2"
-p11 = parsePolynomial "3x+3"
--}
+
 tests :: Test
 tests = TestList [polynomialTests, modularPolynomialTests, polynomialOpTests,
-                  squareFreeTests]
+                  modularPolynomialOpTests, squareFreeTests]
 
 runTests :: IO Counts
 runTests = runTestTT tests
