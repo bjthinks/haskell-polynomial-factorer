@@ -25,7 +25,7 @@ squareFree f =
           dip = cip - derivative bip
           rest = yun bip dip (i+1)
       in if isConstant ai then rest else (ai,i) : rest
-    divide' x y = (\(_,z,_) -> z) (divide x y)
+    divide' x y = let (_,z,_) = divide x y in z
     isConstant (Polynomial []) = True
     isConstant (Polynomial [Term _ 0]) = True
     isConstant _ = False
