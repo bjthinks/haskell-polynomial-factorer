@@ -279,6 +279,8 @@ squareFreeTests = TestList [
   (12,[("x - 1",2),("x + 1",1)]) ~=? printResults (squareFree $ p10*p10*p11),
   (16*27,[("x - 1",4),("x + 1",3)]) ~=? printResults
     (squareFree $ p10*p10*p10*p10*p11*p11*p11),
+  (36,[("x^2 - 1",3),("x^3 + 3",2),("x^2 - 2",1)]) ~=? printResults
+    (squareFree $ p1*p2*p3*p4*p4*p10*p10*p11*p11),
   () ~=? ()]
   where
     printResults (Factorization c fs) =
