@@ -3,19 +3,22 @@ module SquareFree(squareFree) where
 import Defs
 import Polynomial
 
-squareFree :: Polynomial -> [(Polynomial, Exponent)]
+squareFree :: Polynomial -> Factorization Polynomial
 squareFree f =
   -- if f has content c, then f' has content ck for some k.
   -- then a0 has content c as well.
   -- b1 has no content
   -- so all bi have no content
   -- so all ai i>0 have no content
-  let f' = derivative f
-      a0 = polynomialGcd f f'
-      b1 = quotient f a0
-      c1 = quotient f' a0
+  let c = signedContent f
+      g = divideBySignedContent f
+      g' = derivative g
+      a0 = polynomialGcd g g'
+      b1 = quotient g a0
+      c1 = quotient g' a0
       d1 = c1 - derivative b1
-      in reverse (yun b1 d1 1)
+      factorsAndPowers = reverse (yun b1 d1 1)
+      in Factorization c factorsAndPowers
   where
     yun (Polynomial [Term _ 0]) _ _ = []
     yun bi di i =
