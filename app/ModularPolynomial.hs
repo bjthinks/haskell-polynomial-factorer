@@ -96,3 +96,19 @@ mConstantPolynomial :: Coeff -> Coeff -> ModularPolynomial
 mConstantPolynomial m c
   | c `mod` m == 0 = ModularPolynomial m []
   | otherwise = ModularPolynomial m [Term (c `mod` m) 0]
+
+invertMod :: Coeff -> Coeff -> Coeff
+invertMod m c = undefined
+
+mDivisionStep :: ModularPolynomial -> ModularPolynomial ->
+  (Term, ModularPolynomial)
+mDivisionStep _ (ModularPolynomial _ []) = error
+  "attempt to divide a modular polynomial by 0"
+mDivisionStep (ModularPolynomial _ []) _ = error
+  "no terms to divide in mDivisionStep"
+mDivisionStep dividend divisor =
+  let m = modulus dividend
+      Term dividendLeadingCoeff dividendDegree = mLeadingTerm dividend
+      Term divisorLeadingCoeff divisorDegree = mLeadingTerm divisor
+      quotientCoeff = dividendLeadingCoeff * invertMod m divisorLeadingCoeff
+  in undefined
