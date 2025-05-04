@@ -98,7 +98,19 @@ mConstantPolynomial m c
   | otherwise = ModularPolynomial m [Term (c `mod` m) 0]
 
 invertMod :: Coeff -> Coeff -> Coeff
-invertMod m c = undefined
+invertMod m c =
+  let (g,_,b) = extendedGcd m c
+  in if g /= 1
+     then error ("No modular inverse of " ++ show c ++ " mod " ++ show m)
+     else b
+
+extendedGcd :: Coeff -> Coeff -> (Coeff, Coeff, Coeff)
+extendedGcd x 0 = (x,1,0)
+extendedGcd x y =
+  let q = x `div` y
+      r = x `mod` y
+      (g,a,b) = extendedGcd y r
+  in (g,b,a-b*q)
 
 mDivisionStep :: ModularPolynomial -> ModularPolynomial ->
   (Term, ModularPolynomial)
