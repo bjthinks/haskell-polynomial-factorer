@@ -129,6 +129,10 @@ mDivisionStep dividend divisor =
       remainderPoly = dividend - mMultiplyTermByPolynomial quotientTerm divisor
   in (quotientTerm, remainderPoly)
 
+mIsZeroPolynomial :: ModularPolynomial -> Bool
+mIsZeroPolynomial (ModularPolynomial _ []) = True
+mIsZeroPolynomial _ = False
+
 mDivide :: ModularPolynomial -> ModularPolynomial ->
   (ModularPolynomial, ModularPolynomial)
 mDivide startingDividend divisor =
@@ -140,9 +144,10 @@ mDivide startingDividend divisor =
     m = if m1 == m2 then m1 else error "incompatible moduluses in mDivide"
     divide' :: ModularPolynomial -> ([Term], ModularPolynomial)
     divide' dividend
-      | terms divisor == [] = error
+      | mIsZeroPolynomial divisor = error
         "attempt to divide a modular polynomial by zero"
-      | terms dividend == [] = ([], ModularPolynomial m [])
+      -- TODO: The next case could be removed if degree 0 = -1
+      | mIsZeroPolynomial dividend = ([], ModularPolynomial m [])
       | mDegree dividend < mDegree divisor = ([], dividend)
       | otherwise =
         let (q1, r1) = mDivisionStep dividend divisor
@@ -158,3 +163,15 @@ mRemainder :: ModularPolynomial -> ModularPolynomial -> ModularPolynomial
 mRemainder dividend divisor = r
   where
     (_,r) = mDivide dividend divisor
+
+mDivideByLeadingCoeff :: ModularPolynomial -> ModularPolynomial
+mDivideByLeadingCoeff p@(ModularPolynomial _ []) = p
+mDivideByLeadingCoeff p@(ModularPolynomial m _) = mMultiplyTermByPolynomial t p
+  where
+    t = Term (invertMod m (mLeadingCoeff p)) 0
+
+mPolynomialGcd :: ModularPolynomial -> ModularPolynomial -> ModularPolynomial
+mPolynomialGcd p q
+  | mIsZeroPolynomial p = mDivideByLeadingCoeff q
+  | mIsZeroPolynomial q = mDivideByLeadingCoeff p
+  | otherwise = mPolynomialGcd q $ mRemainder p q

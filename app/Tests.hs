@@ -328,6 +328,12 @@ modularPolynomialOpTests = TestList [
     showDivision (mDivide m3 m2)
   , ("2x^2 + 2x + 2 mod 3","2 mod 3") ~=? showDivision (mDivide m6 m5)
   , ("2x^2 + 2x + 2 mod 3","0 mod 3") ~=? showDivision (mDivide m8 m9)
+  , "x + 1 mod 2" ~=? printModularPolynomial (mPolynomialGcd m1 m2)
+  , "x + 1 mod 2" ~=? printModularPolynomial (mPolynomialGcd m2 m1)
+  , "x + 1 mod 2" ~=? printModularPolynomial (mPolynomialGcd m3 m2)
+  , "x + 1 mod 2" ~=? printModularPolynomial (mPolynomialGcd m2 m3)
+  , "1 mod 3" ~=? printModularPolynomial (mPolynomialGcd m6 m5)
+  , "1 mod 3" ~=? printModularPolynomial (mPolynomialGcd m5 m6)
   ]
   where
     showStep (quoti, remain)
