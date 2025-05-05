@@ -148,3 +148,13 @@ mDivide startingDividend divisor =
         let (q1, r1) = mDivisionStep dividend divisor
             (q2, r2) = divide' r1
         in (q1 : q2, r2)
+
+mQuotient :: ModularPolynomial -> ModularPolynomial -> ModularPolynomial
+mQuotient dividend divisor = q
+  where
+    (q,_) = mDivide dividend divisor
+
+mRemainder :: ModularPolynomial -> ModularPolynomial -> ModularPolynomial
+mRemainder dividend divisor = r
+  where
+    (_,r) = mDivide dividend divisor
