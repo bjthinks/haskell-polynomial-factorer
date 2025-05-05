@@ -349,9 +349,13 @@ squareFreeTests = TestList [
     printResults (Factorization c fs) =
       (c,map (\(poly,expo) -> (printPolynomial poly,expo)) fs)
 
+invertModTests :: Test
+invertModTests = TestList
+  [1 ~=? (x * (invertMod 101 x)) `mod` 101 | x <- [1..100]]
+
 tests :: Test
 tests = TestList [polynomialTests, modularPolynomialTests, polynomialOpTests,
-                  modularPolynomialOpTests, squareFreeTests]
+                  modularPolynomialOpTests, squareFreeTests, invertModTests]
 
 runTests :: IO Counts
 runTests = runTestTT tests
