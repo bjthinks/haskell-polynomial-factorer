@@ -122,5 +122,9 @@ mDivisionStep dividend divisor =
   let m = modulus dividend
       Term dividendLeadingCoeff dividendDegree = mLeadingTerm dividend
       Term divisorLeadingCoeff divisorDegree = mLeadingTerm divisor
-      quotientCoeff = dividendLeadingCoeff * invertMod m divisorLeadingCoeff
-  in undefined
+      quotientCoeff = (dividendLeadingCoeff *
+                       invertMod m divisorLeadingCoeff) `mod` m
+      quotientExponent = dividendDegree - divisorDegree
+      quotientTerm = Term quotientCoeff quotientExponent
+      remainderPoly = dividend - mMultiplyTermByPolynomial quotientTerm divisor
+  in (quotientTerm, remainderPoly)
