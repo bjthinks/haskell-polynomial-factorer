@@ -323,11 +323,18 @@ modularPolynomialOpTests = TestList [
   , ("x^5 mod 2","x^5 + x^4 + x^2 + 1 mod 2") ~=? showStep (mDivisionStep m3 m2)
   , ("2x^2 mod 3","2x^2 mod 3") ~=? showStep (mDivisionStep m6 m5)
   , ("2x^2 mod 3","x^2 + 2x + 1 mod 3") ~=? showStep (mDivisionStep m8 m9)
+  , ("x + 1 mod 2","0 mod 2") ~=? showDivision (mDivide m2 m1)
+  , ("x^5 + x^3 + x^2 + x mod 2","x + 1 mod 2") ~=?
+    showDivision (mDivide m3 m2)
+  , ("2x^2 + 2x + 2 mod 3","2 mod 3") ~=? showDivision (mDivide m6 m5)
+  , ("2x^2 + 2x + 2 mod 3","0 mod 3") ~=? showDivision (mDivide m8 m9)
   ]
   where
     showStep (quoti, remain)
       = (printModularPolynomial (ModularPolynomial (modulus remain) [quoti]),
          printModularPolynomial remain)
+    showDivision (quoti, remain)
+      = (printModularPolynomial quoti, printModularPolynomial remain)
 {-
 m1 = parseModularPolynomial "x+1 mod 2"
 m2 = parseModularPolynomial "x^2+1 mod 2"

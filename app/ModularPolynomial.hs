@@ -128,3 +128,23 @@ mDivisionStep dividend divisor =
       quotientTerm = Term quotientCoeff quotientExponent
       remainderPoly = dividend - mMultiplyTermByPolynomial quotientTerm divisor
   in (quotientTerm, remainderPoly)
+
+mDivide :: ModularPolynomial -> ModularPolynomial ->
+  (ModularPolynomial, ModularPolynomial)
+mDivide startingDividend divisor =
+  let (q, r) = divide' startingDividend
+  in (ModularPolynomial m q, r)
+  where
+    m1 = modulus startingDividend
+    m2 = modulus divisor
+    m = if m1 == m2 then m1 else error "incompatible moduluses in mDivide"
+    divide' :: ModularPolynomial -> ([Term], ModularPolynomial)
+    divide' dividend
+      | terms divisor == [] = error
+        "attempt to divide a modular polynomial by zero"
+      | terms dividend == [] = ([], ModularPolynomial m [])
+      | mDegree dividend < mDegree divisor = ([], dividend)
+      | otherwise =
+        let (q1, r1) = mDivisionStep dividend divisor
+            (q2, r2) = divide' r1
+        in (q1 : q2, r2)
