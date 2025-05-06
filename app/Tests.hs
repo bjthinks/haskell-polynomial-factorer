@@ -334,6 +334,11 @@ modularPolynomialOpTests = TestList [
   , "x + 1 mod 2" ~=? printModularPolynomial (mPolynomialGcd m2 m3)
   , "1 mod 3" ~=? printModularPolynomial (mPolynomialGcd m6 m5)
   , "1 mod 3" ~=? printModularPolynomial (mPolynomialGcd m5 m6)
+  , printModularPolynomial (n1*n2*n3*n4) ~=?
+    printModularPolynomial (mPolynomialGcd
+                            (n1*n2*n3*n4*n5*n7*n7)
+                            (n1*n2*n2*n3*n4*n4*n6*n8*n9*n9))
+  , "x^6 + 2x^3 + 2 mod 5" ~=? printModularPolynomial (n1*n2*n3*n4)
   ]
   where
     showStep (quoti, remain)
@@ -341,17 +346,27 @@ modularPolynomialOpTests = TestList [
          printModularPolynomial remain)
     showDivision (quoti, remain)
       = (printModularPolynomial quoti, printModularPolynomial remain)
-{-
-m1 = parseModularPolynomial "x+1 mod 2"
-m2 = parseModularPolynomial "x^2+1 mod 2"
-m3 = parseModularPolynomial "x^7+x^4+x^2+1 mod 2"
-m4 = parseModularPolynomial "x^3+2 mod 3"
-m5 = parseModularPolynomial "x+2 mod 3"
-m6 = parseModularPolynomial "2x^3 mod 3"
-m7 = parseModularPolynomial "2 mod 3"
-m8 = parseModularPolynomial "x^3-x^2-x+1 mod 3"
-m9 = parseModularPolynomial "2x+2 mod 3"
--}
+
+-- Here are some irreducibles mod 5:
+n1 :: ModularPolynomial
+n1 = parseModularPolynomial "x+2 mod 5"
+n2 :: ModularPolynomial
+n2 = parseModularPolynomial "x+4 mod 5"
+n3 :: ModularPolynomial
+n3 = parseModularPolynomial "x^2+x+1 mod 5"
+n4 :: ModularPolynomial
+n4 = parseModularPolynomial "x^2+3x+4 mod 5"
+n5 :: ModularPolynomial
+n5 = parseModularPolynomial "x^3+2x+1 mod 5"
+n6 :: ModularPolynomial
+n6 = parseModularPolynomial "x^3+x^2+4x+1 mod 5"
+n7 :: ModularPolynomial
+n7 = parseModularPolynomial "x^4+2 mod 5"
+n8 :: ModularPolynomial
+n8 = parseModularPolynomial "x^4+x^3+3x+2 mod 5"
+n9 :: ModularPolynomial
+n9 = parseModularPolynomial "x^4+2x^3+2x^2+2x+4 mod 5"
+
 squareFreeTests :: Test
 squareFreeTests = TestList [
   (1,[("x + 1",1)]) ~=? printResults (squareFree $ p1),

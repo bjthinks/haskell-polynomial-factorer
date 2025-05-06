@@ -16,7 +16,7 @@ makeModularPolynomial m =
   ModularPolynomial m . eliminateZeros . addLikeTerms . sortTerms
   where
     eliminateZeros [] = []
-    eliminateZeros ((Term 0 _):ts) = ts
+    eliminateZeros ((Term 0 _):ts) = eliminateZeros ts
     eliminateZeros (t:ts) = t : eliminateZeros ts
     addLikeTerms [] = []
     addLikeTerms [t] = [canonical t]
