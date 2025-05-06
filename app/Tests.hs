@@ -339,6 +339,10 @@ modularPolynomialOpTests = TestList [
                             (n1*n2*n3*n4*n5*n7*n7)
                             (n1*n2*n2*n3*n4*n4*n6*n8*n9*n9))
   , "x^6 + 2x^3 + 2 mod 5" ~=? printModularPolynomial (n1*n2*n3*n4)
+  , printModularPolynomial n9 ~=?
+    printModularPolynomial (mPolynomialGcd
+                            (n1*n2*n4*n5*n7*n7*n9*n9*n9)
+                            (n3*n3*n6*n6*n8*n8*n8*n9))
   ]
   where
     showStep (quoti, remain)
