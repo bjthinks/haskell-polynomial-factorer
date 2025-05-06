@@ -343,6 +343,14 @@ modularPolynomialOpTests = TestList [
     printModularPolynomial (mPolynomialGcd
                             (n1*n2*n4*n5*n7*n7*n9*n9*n9)
                             (n3*n3*n6*n6*n8*n8*n8*n9))
+  , Nothing ~=? mthRoot n1
+  , Nothing ~=? mthRoot n2
+  , Nothing ~=? mthRoot n3
+  , Nothing ~=? mthRoot n5
+  , Nothing ~=? mthRoot n7
+  , Just "x^5 + 4x + 2 mod 5" ~=?
+    showMaybe (mthRoot (parseModularPolynomial "x^25+4x^5+2 mod 5"))
+  , Just m1 ~=? mthRoot m2
   ]
   where
     showStep (quoti, remain)
@@ -350,6 +358,7 @@ modularPolynomialOpTests = TestList [
          printModularPolynomial remain)
     showDivision (quoti, remain)
       = (printModularPolynomial quoti, printModularPolynomial remain)
+    showMaybe = fmap printModularPolynomial
 
 -- Here are some irreducibles mod 5:
 n1 :: ModularPolynomial

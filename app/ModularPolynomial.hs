@@ -6,6 +6,7 @@ import Polynomial
 
 data ModularPolynomial =
   ModularPolynomial { modulus :: Coeff, terms :: [Term] }
+  deriving (Eq, Show, Read)
 
 printModularPolynomial :: ModularPolynomial -> String
 printModularPolynomial (ModularPolynomial m ts) =
@@ -175,3 +176,17 @@ mPolynomialGcd p q
   | mIsZeroPolynomial p = mDivideByLeadingCoeff q
   | mIsZeroPolynomial q = mDivideByLeadingCoeff p
   | otherwise = mPolynomialGcd q $ mRemainder p q
+
+mthRoot :: ModularPolynomial -> Maybe ModularPolynomial
+mthRoot (ModularPolynomial m ts) = do
+  us <- mthRoot' ts
+  return $ ModularPolynomial m us
+  where
+    -- TODO: I want to write this in the compound monad MaybeT [] Term
+    mthRoot' :: [Term] -> Maybe [Term]
+    mthRoot' xs =
+      let exponents = map termExponent xs
+          hasGoodExponents = all ((==0) . (`mod` m)) exponents
+      in if hasGoodExponents
+         then Just [Term c (e `div` m) | Term c e <- xs]
+         else Nothing
