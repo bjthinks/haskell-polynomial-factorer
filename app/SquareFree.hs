@@ -1,7 +1,8 @@
-module SquareFree(squareFree) where
+module SquareFree(squareFree,mIsSquareFree) where
 
 import Defs
 import Polynomial
+import ModularPolynomial
 
 squareFree :: Polynomial -> Factorization Polynomial
 squareFree f =
@@ -31,3 +32,6 @@ squareFree f =
     isConstant (Polynomial []) = True
     isConstant (Polynomial [Term _ 0]) = True
     isConstant _ = False
+
+mIsSquareFree :: ModularPolynomial -> Bool
+mIsSquareFree f = mIsConstantPolynomial $ mPolynomialGcd f $ mDerivative f

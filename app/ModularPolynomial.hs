@@ -98,6 +98,11 @@ mConstantPolynomial m c
   | c `mod` m == 0 = ModularPolynomial m []
   | otherwise = ModularPolynomial m [Term (c `mod` m) 0]
 
+mIsConstantPolynomial :: ModularPolynomial -> Bool
+mIsConstantPolynomial (ModularPolynomial _ []) = True
+mIsConstantPolynomial (ModularPolynomial _ [Term _ 0]) = True
+mIsConstantPolynomial _ = False
+
 invertMod :: Coeff -> Coeff -> Coeff
 invertMod m c =
   let (g,_,b) = extendedGcd m c

@@ -351,6 +351,13 @@ modularPolynomialOpTests = TestList [
   , Just "x^5 + 4x + 2 mod 5" ~=?
     showMaybe (mthRoot (parseModularPolynomial "x^25+4x^5+2 mod 5"))
   , Just m1 ~=? mthRoot m2
+  , True ~=? mIsSquareFree (n1*n2*n3*n4)
+  , False ~=? mIsSquareFree (n1*n2*n3*n4*n9*n9)
+  , True ~=? mIsSquareFree m7
+  , True ~=? mIsSquareFree (parseModularPolynomial "0 mod 5")
+  , False ~=? mIsSquareFree (n1*n1)
+  , False ~=? mIsSquareFree (n1*n1*n1)
+  , False ~=? mIsSquareFree (n1*n1*n1*n1)
   ]
   where
     showStep (quoti, remain)
