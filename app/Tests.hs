@@ -399,8 +399,14 @@ squareFreeTests = TestList [
   (16*27,[("x - 1",4),("x + 1",3)]) ~=? printResults
     (squareFree $ p10*p10*p10*p10*p11*p11*p11),
   (36,[("x^2 - 1",3),("x^3 + 3",2),("x^2 - 2",1)]) ~=? printResults
-    (squareFree $ p1*p2*p3*p4*p4*p10*p10*p11*p11),
-  () ~=? ()]
+    (squareFree $ p1*p2*p3*p4*p4*p10*p10*p11*p11)
+  , 2 ~=? goodModulus p1
+  , 2 ~=? goodModulus p4
+  , 3 ~=? goodModulus (parsePolynomial "x^2+1")
+  , 5 ~=? goodModulus (parsePolynomial "x^6+7")
+  , 3 ~=? goodModulus (parsePolynomial "x^3+x+2") -- mod 2 is x(x+1)^2
+  , False ~=? isGoodModulus 3 p4
+  ]
   where
     printResults (Factorization c fs) =
       (c,map (\(poly,expo) -> (printPolynomial poly,expo)) fs)

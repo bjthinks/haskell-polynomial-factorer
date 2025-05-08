@@ -1,4 +1,4 @@
-module SquareFree(squareFree,mIsSquareFree) where
+module SquareFree(squareFree,mIsSquareFree,isGoodModulus,goodModulus) where
 
 import Defs
 import Polynomial
@@ -35,3 +35,19 @@ squareFree f =
 
 mIsSquareFree :: ModularPolynomial -> Bool
 mIsSquareFree f = mIsConstantPolynomial $ mPolynomialGcd f $ mDerivative f
+
+reduceMod :: Coeff -> Polynomial -> ModularPolynomial
+reduceMod m (Polynomial ts) = makeModularPolynomial m ts
+
+isGoodModulus :: Coeff -> Polynomial -> Bool
+isGoodModulus m p =
+  let q = reduceMod m p
+  in degree p == mDegree q && mIsSquareFree q
+
+-- The argument f must be square free. Finds a modulus so that f is
+-- also square free mod m.
+goodModulus :: Polynomial -> Coeff
+goodModulus p = head $
+  filter (flip isGoodModulus p) primes
+  where -- TODO Need a real list of primes
+    primes = [2,3,5,7,11,13,17,19]
